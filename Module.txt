@@ -1,0 +1,13 @@
+﻿Name: Rss Reader
+AntiForgery: enabled
+Author: Lombiq
+Website: https://github.com/Lombiq/Orchard-RSS-Reader
+Version: 1.0
+OrchardVersion: 1.10.1
+Description: Aggregates RSS feeds by making content items from them.
+Features:
+    Lombiq.RssReader:
+        Name: Rss Reader
+        Description: Aggregates RSS feeds by making content items from them.
+        Category: Content
+        Dependencies: 
