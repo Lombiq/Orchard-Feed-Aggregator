@@ -1,0 +1,13 @@
+﻿<Placement>
+
+  <!-- Create new RssSyncProfile -->
+  <Match Path="/Admin/Contents/Create/RssSyncProfile">
+    <Place Parts_Title_Edit ="-"
+           Fields_Common_Text_Edit = "-"
+           Fields_Numeric_Edit = "-"
+           />
+  </Match>
+
+  <Place Parts_RssSyncProfile_Edit = "Content: 1" />
+
+</Placement>
