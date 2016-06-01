@@ -4,4 +4,4 @@
 
 ## Project Description
 
-Orchard module for aggregating RSS feeds by making content items from them.
+Orchard module for aggregating RSS feeds by creating content items from them.
