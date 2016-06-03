@@ -5,6 +5,7 @@
     <Place Parts_Title_Edit ="-"
            Fields_Common_Text_Edit = "-"
            Fields_Numeric_Edit = "-"
+           Fields_ContentPicker_Edit = "-"
            />
   </Match>
 

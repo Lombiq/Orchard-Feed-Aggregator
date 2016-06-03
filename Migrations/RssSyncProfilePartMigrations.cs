@@ -35,7 +35,13 @@ namespace Lombiq.RssReader.Migrations
                         .WithDisplayName("Minutes Between Syncs")
                         .WithSetting("NumericFieldSettings.Required", "True")
                         .WithSetting("NumericFieldSettings.Hint", "A background task will check the RSS feed for new entries.")
-                        .WithSetting("NumericFieldSettings.Minimum", "1")));
+                        .WithSetting("NumericFieldSettings.Minimum", "1"))
+                    .WithField(FieldNames.Container, field => field
+                        .OfType("ContentPickerField")
+                        .WithDisplayName("Container")
+                        .WithSetting("ContentPickerFieldSettings.Required", "False")
+                        .WithSetting("ContentPickerFieldSettings.Hint", "Select a container for the items. E.g. if you want to sync into BlogPosts, then you have to select a container Blog for them.")
+                        .WithSetting("ContentPickerFieldSettings.Multiple", "False")));
 
             ContentDefinitionManager.AlterTypeDefinition(
                 ContentTypes.RssSyncProfile,
