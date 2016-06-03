@@ -43,7 +43,6 @@ namespace Lombiq.RssReader.Migrations
                     .WithPart(typeof(RssSyncProfilePart).Name)
                     .Creatable()
                     .Listable()
-                    .Draftable()
                     .Securable()
                     .DisplayedAs("Rss Sync Profile")
                     .WithPart("TitlePart")

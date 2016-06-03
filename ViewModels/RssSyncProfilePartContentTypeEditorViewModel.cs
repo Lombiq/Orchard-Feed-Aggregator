@@ -7,7 +7,7 @@ using System.Web.Mvc;
 
 namespace Lombiq.RssReader.ViewModels
 {
-    public class RssSyncProfilePartEditorViewModel
+    public class RssSyncProfilePartContentTypeEditorViewModel
     {
         public RssSyncProfilePart RssSyncProfilePart { get; set; }
         public IEnumerable<SelectListItem> AccessibleContentTypes { get; set; }

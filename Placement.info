@@ -8,6 +8,12 @@
            />
   </Match>
 
-  <Place Parts_RssSyncProfile_Edit = "Content: 1" />
+  <!-- Edit RssSyncProfile -->
+  <Match Path="/Admin/Contents/Edit/*">
+    <Place Parts_RssSyncProfile_Mappings_Edit ="Content: 2"
+           />
+  </Match>
+
+  <Place Parts_RssSyncProfile_ContentType_Edit = "Content: 1" />
 
 </Placement>
