@@ -10,4 +10,4 @@ Features:
         Name: Rss Reader
         Description: Aggregates RSS feeds by creating content items from them.
         Category: Content
-        Dependencies: Orchard.ContentPicker, Orchard.Fields
+        Dependencies: Orchard.ContentPicker, Orchard.Fields, Piedone.HelpfulLibraries.Contents, Piedone.HelpfulLibraries.Tasks

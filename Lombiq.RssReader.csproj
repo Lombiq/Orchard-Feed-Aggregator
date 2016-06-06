@@ -73,9 +73,11 @@
   <ItemGroup>
     <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Constants\FieldNames.cs" />
+    <Compile Include="Constants\TaskTypes.cs" />
     <Compile Include="Drivers\RssSyncProfileItemPartDriver.cs" />
     <Compile Include="Drivers\RssSyncProfilePartDriver.cs" />
     <Compile Include="Handlers\RssSyncProfilePartHandler.cs" />
+    <Compile Include="Helpers\TaskNameHelper.cs" />
     <Compile Include="Migrations\RssSyncProfileItemPartMigrations.cs" />
     <Compile Include="Migrations\RssSyncProfilePartMigrations.cs" />
     <Compile Include="Models\IRssFeedDataSavingProviderContext.cs" />
@@ -87,6 +89,7 @@
     <Compile Include="Services\IRssFeedDataSavingProvider.cs" />
     <Compile Include="Services\IRssFeedDataSavingService.cs" />
     <Compile Include="Services\RssFeedDataSavingService.cs" />
+    <Compile Include="Services\RssSyncProfileUpdaterScheduledTask.cs" />
     <Compile Include="Services\TextFieldSavingProvider.cs" />
     <Compile Include="Services\TitlePartSavingProvider.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
@@ -107,6 +110,14 @@
       <Project>{9916839C-39FC-4CEB-A5AF-89CA7E87119F}</Project>
       <Name>Orchard.Core</Name>
       <Private>false</Private>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Fields\Orchard.Fields.csproj">
+      <Project>{3787DDE5-E5C8-4841-BDA7-DCB325388064}</Project>
+      <Name>Orchard.Fields</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
+      <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>
+      <Name>Piedone.HelpfulLibraries</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
