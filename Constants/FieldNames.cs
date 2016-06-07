@@ -9,7 +9,6 @@ namespace Lombiq.RssReader.Constants
     {
         public const string MinutesBetweenSyncs = "MinutesBetweenSyncs";
         public const string RssFeedUrl = "RssFeedUrl";
-        public const string RssFeedItemTagName = "RssFeedItemTagName";
         public const string NumberOfItemsToSyncDuringInit = "NumberOfItemsToSyncDuringInit";
         public const string Container = "Container";
     }

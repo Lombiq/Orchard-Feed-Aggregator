@@ -13,12 +13,14 @@ namespace Lombiq.RssReader.Migrations
                 .CreateTable(typeof(RssSyncProfileItemPartRecord).Name,
                    table => table
                        .ContentPartRecord()
-                       .Column<string>("RssSyncProfileId")
+                       .Column<int>("RssSyncProfileId")
+                       .Column<string>("FeedItemId")
                    )
                 .AlterTable(typeof(RssSyncProfileItemPartRecord).Name,
                    table =>
                    {
                        table.CreateIndex("RssSyncProfileId", "RssSyncProfileId");
+                       table.CreateIndex("FeedItemId", "FeedItemId");
                    });
 
             ContentDefinitionManager.AlterPartDefinition(typeof(RssSyncProfileItemPart).Name,

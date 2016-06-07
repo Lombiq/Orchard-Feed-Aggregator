@@ -18,16 +18,19 @@ namespace Lombiq.RssReader.Services
         private readonly IScheduledTaskManager _scheduledTaskManager;
         private readonly IClock _clock;
         private readonly IContentManager _contentManager;
+        private readonly IFeedManager _feedManager;
 
 
         public RssSyncProfileUpdaterScheduledTask(
             IScheduledTaskManager scheduledTaskManager,
             IClock clock,
-            IContentManager contentManager)
+            IContentManager contentManager,
+            IFeedManager feedManager)
         {
             _scheduledTaskManager = scheduledTaskManager;
             _clock = clock;
             _contentManager = contentManager;
+            _feedManager = feedManager;
         }
 
 
@@ -43,6 +46,9 @@ namespace Lombiq.RssReader.Services
 
             var rssSyncProfilePart = rssSyncProfileContentItem.As<RssSyncProfilePart>();
 
+            var feedType = "";
+            if (!_feedManager.TryGetValidFeedType(rssSyncProfilePart, out feedType)) return;
+
             // If the init happened, then check for the new entires.
             if (rssSyncProfilePart.SuccesfulInit)
             {
@@ -52,6 +58,7 @@ namespace Lombiq.RssReader.Services
             else
             {
 
+                //rssSyncProfilePart.SuccesfulInit = true;
             }
         }
 

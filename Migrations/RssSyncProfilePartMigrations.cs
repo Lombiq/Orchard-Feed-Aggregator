@@ -19,11 +19,6 @@ namespace Lombiq.RssReader.Migrations
                         .WithDisplayName("Rss Feed Url")
                         .WithSetting("TextFieldSettings.Required", "True")
                         .WithSetting("TextFieldSettings.Hint", "The Url of the RSS feed to sync."))
-                    .WithField(FieldNames.RssFeedItemTagName, field => field
-                        .OfType("TextField")
-                        .WithDisplayName("Rss Feed Item Tag Name")
-                        .WithSetting("TextFieldSettings.Required", "True")
-                        .WithSetting("TextFieldSettings.Hint", "The xml tag name of the item/entry in the RSS feed."))
                     .WithField(FieldNames.NumberOfItemsToSyncDuringInit, field => field
                         .OfType("NumericField")
                         .WithDisplayName("Number Of Items To Sync During Init")

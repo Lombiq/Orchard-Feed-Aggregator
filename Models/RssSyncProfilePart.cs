@@ -8,6 +8,7 @@ using System.Linq;
 using System.Web;
 using Piedone.HelpfulLibraries.Contents;
 using Orchard.Fields.Fields;
+using Orchard.Core.Common.Fields;
 
 namespace Lombiq.RssReader.Models
 {
@@ -31,6 +32,15 @@ namespace Lombiq.RssReader.Models
             set { this.Store(x => x.SuccesfulInit, value); }
         }
 
+        /// <summary>
+        /// The modification date of the entry in the feed.
+        /// </summary>
+        public DateTime LatestCreatedItemDate
+        {
+            get { return this.Retrieve(x => x.LatestCreatedItemDate); }
+            set { this.Store(x => x.LatestCreatedItemDate, value); }
+        }
+
         private readonly LazyField<List<Mapping>> _mappings = new LazyField<List<Mapping>>();
         internal LazyField<List<Mapping>> MappingsField { get { return _mappings; } }
         public List<Mapping> Mappings { get { return _mappings.Value; } }
@@ -42,6 +52,16 @@ namespace Lombiq.RssReader.Models
                 return this.AsField<NumericField>(
                     typeof(RssSyncProfilePart).Name,
                     FieldNames.MinutesBetweenSyncs).Value;
+            }
+        }
+
+        public string RssFeedUrl
+        {
+            get
+            {
+                return this.AsField<TextField>(
+                    typeof(RssSyncProfilePart).Name,
+                    FieldNames.RssFeedUrl).Value;
             }
         }
     }
