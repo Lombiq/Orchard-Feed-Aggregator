@@ -12,6 +12,7 @@ namespace Lombiq.FeedAggregator.Services
         /// <summary>
         /// Returns true if feed type getting was successful.
         /// If the feed is invalid then it counts as unsuccesful getting.
+        /// It also sets the FeedItemIdType once and for all.
         /// </summary>
         /// <param name="feedSyncProfilePart">The FeedSyncProfilePart</param>
         /// <param name="feedType">The type of the feed.</param>

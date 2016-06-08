@@ -8,12 +8,12 @@ namespace Lombiq.FeedAggregator.Models.NonPersistent
     public class Mapping
     {
         /// <summary>
-        /// Format: NodeName or NodeName.AttributeName
+        /// Format: NodeName or NodeName.AttributeName.
         /// </summary>
         public string FeedMapping { get; set; }
 
         /// <summary>
-        /// Format: PartName or PartName.FieldName
+        /// Format: PartName, PartName.FieldName or ContentType.FieldName.
         /// </summary>
         public string ContentItemStorageMapping { get; set; }
     }

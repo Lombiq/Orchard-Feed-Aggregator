@@ -12,6 +12,6 @@ namespace Lombiq.FeedAggregator.Services
     public interface IFeedDataSavingProvider : IDependency
     {
         string ProviderType { get; }
-        void Save(IFeedDataSavingProviderContext feedDataSavingProviderContext);
+        bool Save(IFeedDataSavingProviderContext feedDataSavingProviderContext);
     }
 }

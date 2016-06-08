@@ -26,10 +26,16 @@ namespace Lombiq.FeedAggregator.Models
             set { this.Store(x => x.MappingsSerialized, value); }
         }
 
-        public bool SuccesfulInit
+        public string FeedItemIdType
         {
-            get { return this.Retrieve(x => x.SuccesfulInit); }
-            set { this.Store(x => x.SuccesfulInit, value); }
+            get { return this.Retrieve(x => x.FeedItemIdType); }
+            set { this.Store(x => x.FeedItemIdType, value); }
+        }
+
+        public string FeedItemModificationDateType
+        {
+            get { return this.Retrieve(x => x.FeedItemModificationDateType); }
+            set { this.Store(x => x.FeedItemModificationDateType, value); }
         }
 
         /// <summary>

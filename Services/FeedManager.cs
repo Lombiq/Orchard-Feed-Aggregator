@@ -73,8 +73,19 @@ namespace Lombiq.FeedAggregator.Services
                         Logger.Error("Feed is invalid. No guid, title or description element.");
                         return false;
                     }
+                    // Since the feed is valid, set the id type.
+                    else if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType))
+                    {
+                        if (ElementContainsNodeWithName(firstItemElement, "guid"))
+                            feedSyncProfilePart.FeedItemIdType = "guid";
+                        else if (ElementContainsNodeWithName(firstItemElement, "title"))
+                            feedSyncProfilePart.FeedItemIdType = "title";
+                        else if (ElementContainsNodeWithName(firstItemElement, "description"))
+                            feedSyncProfilePart.FeedItemIdType = "description";
+                    }
 
                     feedType = "Rss";
+                    if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType)) feedSyncProfilePart.FeedItemModificationDateType = "pubDate";
                     return true;
                 }
 
@@ -107,8 +118,14 @@ namespace Lombiq.FeedAggregator.Services
                             Logger.Error("Feed is invalid. No id element.");
                             return false;
                         }
+                        // Since the feed is valid, set the id type.
+                        else if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType))
+                        {
+                            feedSyncProfilePart.FeedItemIdType = "id";
+                        }
 
                         feedType = "Atom";
+                        if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType)) feedSyncProfilePart.FeedItemModificationDateType = "updated";
                         return true;
                     }
                 }
@@ -157,6 +174,12 @@ namespace Lombiq.FeedAggregator.Services
             }
 
             return accessibleDataStorageNames;
+        }
+
+
+        private bool ElementContainsNodeWithName(XElement xElement, string name)
+        {
+            return xElement.Elements().Any(element => element.Name.LocalName == name);
         }
     }
 }

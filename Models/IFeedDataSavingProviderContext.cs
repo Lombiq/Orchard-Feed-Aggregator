@@ -1,4 +1,5 @@
-﻿using Orchard.ContentManagement;
+﻿using Lombiq.FeedAggregator.Models.NonPersistent;
+using Orchard.ContentManagement;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -8,10 +9,12 @@ namespace Lombiq.FeedAggregator.Models
 {
     public interface IFeedDataSavingProviderContext
     {
-        IContent Content { get; }
+        FeedSyncProfilePart FeedSyncProfilePart { get; }
 
         string Data { get; }
 
-        string ProviderTypeName { get; }
+        Mapping Mapping { get; }
+
+        IContent Content { get; }
     }
 }
