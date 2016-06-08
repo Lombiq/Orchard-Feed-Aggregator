@@ -17,5 +17,7 @@ namespace Lombiq.FeedAggregator.Services
         /// <param name="feedType">The type of the feed.</param>
         /// <returns></returns>
         bool TryGetValidFeedType(FeedSyncProfilePart feedSyncProfilePart, out string feedType);
+
+        IList<string> GetAccessibleContentItemStorageNames(string contentType);
     }
 }

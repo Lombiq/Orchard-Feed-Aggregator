@@ -17,7 +17,7 @@ namespace Lombiq.FeedAggregator.Drivers
     public class FeedSyncProfilePartDriver : ContentPartDriver<FeedSyncProfilePart>
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IFeedDataSavingService _feedDataSavingService;
+        private readonly IFeedManager _feedManager;
         private readonly IJsonConverter _jsonConverter;
 
 
@@ -26,11 +26,11 @@ namespace Lombiq.FeedAggregator.Drivers
 
         public FeedSyncProfilePartDriver(
             IContentDefinitionManager contentDefinitionManager,
-            IFeedDataSavingService feedDataSavingService,
+            IFeedManager feedManager,
             IJsonConverter jsonConverter)
         {
             _contentDefinitionManager = contentDefinitionManager;
-            _feedDataSavingService = feedDataSavingService;
+            _feedManager = feedManager;
             _jsonConverter = jsonConverter;
 
             T = NullLocalizer.Instance;
@@ -62,7 +62,7 @@ namespace Lombiq.FeedAggregator.Drivers
                     "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
-                        var accessibleContentItemStorageNames = _feedDataSavingService
+                        var accessibleContentItemStorageNames = _feedManager
                             .GetAccessibleContentItemStorageNames(part.ContentType);
 
                         // If a mapping data storage no longer available or the feed node field is empty,

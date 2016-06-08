@@ -90,8 +90,6 @@
     <Compile Include="Services\FeedManager.cs" />
     <Compile Include="Services\IFeedManager.cs" />
     <Compile Include="Services\IFeedDataSavingProvider.cs" />
-    <Compile Include="Services\IFeedDataSavingService.cs" />
-    <Compile Include="Services\FeedDataSavingService.cs" />
     <Compile Include="Services\FeedSyncProfileUpdaterScheduledTask.cs" />
     <Compile Include="Services\TextFieldSavingProvider.cs" />
     <Compile Include="Services\TitlePartSavingProvider.cs" />
