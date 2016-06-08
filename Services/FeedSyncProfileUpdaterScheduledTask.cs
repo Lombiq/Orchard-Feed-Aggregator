@@ -7,13 +7,13 @@ using System.Linq;
 using System.Web;
 using Piedone.HelpfulLibraries.Tasks;
 using Orchard.ContentManagement;
-using Lombiq.RssReader.Constants;
-using Lombiq.RssReader.Models;
-using Lombiq.RssReader.Helpers;
+using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Models;
+using Lombiq.FeedAggregator.Helpers;
 
-namespace Lombiq.RssReader.Services
+namespace Lombiq.FeedAggregator.Services
 {
-    public class RssSyncProfileUpdaterScheduledTask : IScheduledTaskHandler, IOrchardShellEvents
+    public class FeedSyncProfileUpdaterScheduledTask : IScheduledTaskHandler, IOrchardShellEvents
     {
         private readonly IScheduledTaskManager _scheduledTaskManager;
         private readonly IClock _clock;
@@ -21,7 +21,7 @@ namespace Lombiq.RssReader.Services
         private readonly IFeedManager _feedManager;
 
 
-        public RssSyncProfileUpdaterScheduledTask(
+        public FeedSyncProfileUpdaterScheduledTask(
             IScheduledTaskManager scheduledTaskManager,
             IClock clock,
             IContentManager contentManager,
@@ -36,21 +36,21 @@ namespace Lombiq.RssReader.Services
 
         public void Process(ScheduledTaskContext context)
         {
-            if (!context.Task.TaskType.StartsWith(TaskTypes.RssSyncProfileUpdaterBase)) return;
+            if (!context.Task.TaskType.StartsWith(TaskTypes.FeedSyncProfileUpdaterBase)) return;
 
             Renew(true, context.Task.ContentItem);
 
-            var rssSyncProfileContentItem = context.Task.ContentItem;
-            if (rssSyncProfileContentItem == null ||
-                rssSyncProfileContentItem.ContentType != ContentTypes.RssSyncProfile) return;
+            var feedSyncProfileContentItem = context.Task.ContentItem;
+            if (feedSyncProfileContentItem == null ||
+                feedSyncProfileContentItem.ContentType != ContentTypes.FeedSyncProfile) return;
 
-            var rssSyncProfilePart = rssSyncProfileContentItem.As<RssSyncProfilePart>();
+            var feedSyncProfilePart = feedSyncProfileContentItem.As<FeedSyncProfilePart>();
 
             var feedType = "";
-            if (!_feedManager.TryGetValidFeedType(rssSyncProfilePart, out feedType)) return;
+            if (!_feedManager.TryGetValidFeedType(feedSyncProfilePart, out feedType)) return;
 
             // If the init happened, then check for the new entires.
-            if (rssSyncProfilePart.SuccesfulInit)
+            if (feedSyncProfilePart.SuccesfulInit)
             {
 
             }
@@ -58,14 +58,14 @@ namespace Lombiq.RssReader.Services
             else
             {
 
-                //rssSyncProfilePart.SuccesfulInit = true;
+                //feedSyncProfilePart.SuccesfulInit = true;
             }
         }
 
         public void Activated()
         {
             // Renewing all tasks.
-            foreach (var contentItem in _contentManager.Query(ContentTypes.RssSyncProfile).List())
+            foreach (var contentItem in _contentManager.Query(ContentTypes.FeedSyncProfile).List())
             {
                 Renew(false, contentItem);
             }
@@ -78,8 +78,8 @@ namespace Lombiq.RssReader.Services
         {
             _scheduledTaskManager
                 .CreateTaskIfNew(
-                    TaskNameHelper.GetRssSyncProfileUpdaterTaskName(contentItem),
-                    _clock.UtcNow.AddMinutes(Convert.ToDouble(contentItem.As<RssSyncProfilePart>().MinutesBetweenSyncs)),
+                    TaskNameHelper.GetFeedSyncProfileUpdaterTaskName(contentItem),
+                    _clock.UtcNow.AddMinutes(Convert.ToDouble(contentItem.As<FeedSyncProfilePart>().MinutesBetweenSyncs)),
                     contentItem,
                     calledFromTaskProcess);
         }

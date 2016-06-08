@@ -1,6 +1,6 @@
-﻿using Lombiq.RssReader.Helpers;
-using Lombiq.RssReader.Models;
-using Lombiq.RssReader.Models.NonPersistent;
+﻿using Lombiq.FeedAggregator.Helpers;
+using Lombiq.FeedAggregator.Models;
+using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Services;
 using Orchard.Tasks.Scheduling;
@@ -9,17 +9,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.RssReader.Handlers
+namespace Lombiq.FeedAggregator.Handlers
 {
-    public class RssSyncProfilePartHandler : ContentHandler
+    public class FeedSyncProfilePartHandler : ContentHandler
     {
-        public RssSyncProfilePartHandler(
+        public FeedSyncProfilePartHandler(
             IJsonConverter jsonConverter,
             IScheduledTaskManager scheduledTaskManager,
             IClock clock
             )
         {
-            OnActivated<RssSyncProfilePart>((context, part) =>
+            OnActivated<FeedSyncProfilePart>((context, part) =>
             {
                 part.MappingsField.Loader(() =>
                 {
@@ -29,12 +29,12 @@ namespace Lombiq.RssReader.Handlers
                 });
             });
 
-            OnRemoved<RssSyncProfilePart>((context, part) =>
+            OnRemoved<FeedSyncProfilePart>((context, part) =>
             {
                 scheduledTaskManager.DeleteTasks(part.ContentItem);
             });
 
-            OnPublished<RssSyncProfilePart>((context, part) =>
+            OnPublished<FeedSyncProfilePart>((context, part) =>
             {
                 if (context.PreviousItemVersionRecord != null)
                 {
@@ -44,7 +44,7 @@ namespace Lombiq.RssReader.Handlers
                     // the second successful saving.
                     scheduledTaskManager
                         .CreateTask(
-                            TaskNameHelper.GetRssSyncProfileUpdaterTaskName(part.ContentItem),
+                            TaskNameHelper.GetFeedSyncProfileUpdaterTaskName(part.ContentItem),
                             clock.UtcNow.AddMinutes(1),
                             part.ContentItem);
                 }

@@ -1,7 +1,7 @@
-﻿using Lombiq.RssReader.Models;
-using Lombiq.RssReader.Models.NonPersistent;
-using Lombiq.RssReader.Services;
-using Lombiq.RssReader.ViewModels;
+﻿using Lombiq.FeedAggregator.Models;
+using Lombiq.FeedAggregator.Models.NonPersistent;
+using Lombiq.FeedAggregator.Services;
+using Lombiq.FeedAggregator.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
 using Orchard.ContentManagement.MetaData;
@@ -12,66 +12,66 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web.Mvc;
 
-namespace Lombiq.RssReader.Drivers
+namespace Lombiq.FeedAggregator.Drivers
 {
-    public class RssSyncProfilePartDriver : ContentPartDriver<RssSyncProfilePart>
+    public class FeedSyncProfilePartDriver : ContentPartDriver<FeedSyncProfilePart>
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IRssFeedDataSavingService _rssFeedDataSavingService;
+        private readonly IFeedDataSavingService _feedDataSavingService;
         private readonly IJsonConverter _jsonConverter;
 
 
         public Localizer T { get; set; }
 
 
-        public RssSyncProfilePartDriver(
+        public FeedSyncProfilePartDriver(
             IContentDefinitionManager contentDefinitionManager,
-            IRssFeedDataSavingService rssFeedDataSavingService,
+            IFeedDataSavingService feedDataSavingService,
             IJsonConverter jsonConverter)
         {
             _contentDefinitionManager = contentDefinitionManager;
-            _rssFeedDataSavingService = rssFeedDataSavingService;
+            _feedDataSavingService = feedDataSavingService;
             _jsonConverter = jsonConverter;
 
             T = NullLocalizer.Instance;
         }
 
 
-        protected override DriverResult Editor(RssSyncProfilePart part, dynamic shapeHelper)
+        protected override DriverResult Editor(FeedSyncProfilePart part, dynamic shapeHelper)
         {
             return Combined(
                 ContentShape(
-                    "Parts_RssSyncProfile_ContentType_Edit",
+                    "Parts_FeedSyncProfile_ContentType_Edit",
                     () =>
                     {
                         var accessibleContentTypes =
-                            GetTypesWithRssSyncProfileItemPart()
+                            GetTypesWithFeedSyncProfileItemPart()
                             .Select(item =>
                                 new SelectListItem { Text = item, Value = item, Selected = item == part.ContentType });
 
                         return shapeHelper.EditorTemplate(
-                            TemplateName: "Parts.RssSyncProfile.ContentType",
-                            Model: new RssSyncProfilePartContentTypeEditorViewModel
+                            TemplateName: "Parts.FeedSyncProfile.ContentType",
+                            Model: new FeedSyncProfilePartContentTypeEditorViewModel
                             {
-                                RssSyncProfilePart = part,
+                                FeedSyncProfilePart = part,
                                 AccessibleContentTypes = accessibleContentTypes
                             },
                             Prefix: Prefix);
                     }),
                 ContentShape(
-                    "Parts_RssSyncProfile_Mappings_Edit",
+                    "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
-                        var accessibleContentItemStorageNames = _rssFeedDataSavingService
+                        var accessibleContentItemStorageNames = _feedDataSavingService
                             .GetAccessibleContentItemStorageNames(part.ContentType);
 
-                        // If a mapping data storage no longer available or the RSS node field is empty,
+                        // If a mapping data storage no longer available or the feed node field is empty,
                         // then delete it from the mappings.
                         part
                             .Mappings
                             .RemoveAll(mapping =>
                                 !accessibleContentItemStorageNames.Contains(mapping.ContentItemStorageMapping) ||
-                                string.IsNullOrEmpty(mapping.RssMapping));
+                                string.IsNullOrEmpty(mapping.FeedMapping));
 
                         var mappingViewModel = new List<MappingViewModel>();
                         var contentItemStorageMappings = part
@@ -89,7 +89,7 @@ namespace Lombiq.RssReader.Drivers
                                         new Mapping
                                         {
                                             ContentItemStorageMapping = "",
-                                            RssMapping = ""
+                                            FeedMapping = ""
                                         });
                             }
                         }
@@ -120,23 +120,23 @@ namespace Lombiq.RssReader.Drivers
                             mappingViewModel.Add(
                                 new MappingViewModel
                                 {
-                                    RssMapping = mapping.RssMapping,
+                                    FeedMapping = mapping.FeedMapping,
                                     ContentItemStorageMappingSelectList = selectList
                                 });
                         }
 
                         return shapeHelper.EditorTemplate(
-                            TemplateName: "Parts.RssSyncProfile.Mappings",
-                            Model: new RssSyncProfilePartMappingsEditorViewModel
+                            TemplateName: "Parts.FeedSyncProfile.Mappings",
+                            Model: new FeedSyncProfilePartMappingsEditorViewModel
                             {
-                                RssSyncProfilePart = part,
+                                FeedSyncProfilePart = part,
                                 MappingViewModel = mappingViewModel
                             },
                             Prefix: Prefix);
                     }));
         }
 
-        protected override DriverResult Editor(RssSyncProfilePart part, IUpdateModel updater, dynamic shapeHelper)
+        protected override DriverResult Editor(FeedSyncProfilePart part, IUpdateModel updater, dynamic shapeHelper)
         {
             var oldContentTypeValue = part.ContentType;
             if (updater.TryUpdateModel(part, Prefix, null, null))
@@ -147,16 +147,16 @@ namespace Lombiq.RssReader.Drivers
                     part.ContentType = oldContentTypeValue;
                 }
 
-                if (!GetTypesWithRssSyncProfileItemPart().Contains(part.ContentType))
+                if (!GetTypesWithFeedSyncProfileItemPart().Contains(part.ContentType))
                 {
-                    updater.AddModelError("InvalidContentTye", T("Please select a content type with RssSyncProfileItemPart."));
+                    updater.AddModelError("InvalidContentTye", T("Please select a content type with FeedSyncProfileItemPart."));
                 }
 
                 // Clearing the empty mappings so only the filled ones will be saved.
                 part
                     .Mappings
                     .RemoveAll(mapping =>
-                        string.IsNullOrEmpty(mapping.RssMapping) ||
+                        string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
                 part.MappingsSerialized = _jsonConverter.Serialize(part.Mappings);
@@ -166,11 +166,11 @@ namespace Lombiq.RssReader.Drivers
         }
 
 
-        private IEnumerable<string> GetTypesWithRssSyncProfileItemPart()
+        private IEnumerable<string> GetTypesWithFeedSyncProfileItemPart()
         {
             return _contentDefinitionManager.ListTypeDefinitions()
                 .Where(ctd =>
-                    ctd.Parts.Select(p => p.PartDefinition.Name).Contains(typeof(RssSyncProfileItemPart).Name) &&
+                    ctd.Parts.Select(p => p.PartDefinition.Name).Contains(typeof(FeedSyncProfileItemPart).Name) &&
                     ctd.Settings.GetModel<ContentTypeSettings>().Draftable)
                 .Select(ctd => ctd.Name);
         }

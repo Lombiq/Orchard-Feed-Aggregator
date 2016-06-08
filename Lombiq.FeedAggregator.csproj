@@ -10,8 +10,8 @@
     <ProjectTypeGuids>{349c5851-65df-11da-9384-00065b846f21};{fae04ec0-301f-11d3-bf4b-00c04f79efbc}</ProjectTypeGuids>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Lombiq.RssReader</RootNamespace>
-    <AssemblyName>Lombiq.RssReader</AssemblyName>
+    <RootNamespace>Lombiq.FeedAggregator</RootNamespace>
+    <AssemblyName>Lombiq.FeedAggregator</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <MvcBuildViews>false</MvcBuildViews>
     <FileUpgradeFlags>
@@ -75,29 +75,29 @@
     <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Constants\FieldNames.cs" />
     <Compile Include="Constants\TaskTypes.cs" />
-    <Compile Include="Drivers\RssSyncProfileItemPartDriver.cs" />
-    <Compile Include="Drivers\RssSyncProfilePartDriver.cs" />
-    <Compile Include="Handlers\RssSyncProfilePartHandler.cs" />
+    <Compile Include="Drivers\FeedSyncProfileItemPartDriver.cs" />
+    <Compile Include="Drivers\FeedSyncProfilePartDriver.cs" />
+    <Compile Include="Handlers\FeedSyncProfilePartHandler.cs" />
     <Compile Include="Helpers\TaskNameHelper.cs" />
-    <Compile Include="Migrations\RssSyncProfileItemPartMigrations.cs" />
-    <Compile Include="Migrations\RssSyncProfilePartMigrations.cs" />
-    <Compile Include="Models\IRssFeedDataSavingProviderContext.cs" />
+    <Compile Include="Migrations\FeedSyncProfileItemPartMigrations.cs" />
+    <Compile Include="Migrations\FeedSyncProfilePartMigrations.cs" />
+    <Compile Include="Models\IFeedDataSavingProviderContext.cs" />
     <Compile Include="Models\NonPersistent\Mapping.cs" />
-    <Compile Include="Models\RssFeedDataSavingProviderContext.cs" />
-    <Compile Include="Models\RssSyncProfileItemPart.cs" />
-    <Compile Include="Models\RssSyncProfilePart.cs" />
+    <Compile Include="Models\FeedDataSavingProviderContext.cs" />
+    <Compile Include="Models\FeedSyncProfileItemPart.cs" />
+    <Compile Include="Models\FeedSyncProfilePart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\FeedManager.cs" />
     <Compile Include="Services\IFeedManager.cs" />
-    <Compile Include="Services\IRssFeedDataSavingProvider.cs" />
-    <Compile Include="Services\IRssFeedDataSavingService.cs" />
-    <Compile Include="Services\RssFeedDataSavingService.cs" />
-    <Compile Include="Services\RssSyncProfileUpdaterScheduledTask.cs" />
+    <Compile Include="Services\IFeedDataSavingProvider.cs" />
+    <Compile Include="Services\IFeedDataSavingService.cs" />
+    <Compile Include="Services\FeedDataSavingService.cs" />
+    <Compile Include="Services\FeedSyncProfileUpdaterScheduledTask.cs" />
     <Compile Include="Services\TextFieldSavingProvider.cs" />
     <Compile Include="Services\TitlePartSavingProvider.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
-    <Compile Include="ViewModels\RssSyncProfilePartContentTypeEditorViewModel.cs" />
-    <Compile Include="ViewModels\RssSyncProfilePartMappingsEditorViewModel.cs" />
+    <Compile Include="ViewModels\FeedSyncProfilePartContentTypeEditorViewModel.cs" />
+    <Compile Include="ViewModels\FeedSyncProfilePartMappingsEditorViewModel.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Web.config" />
@@ -133,13 +133,13 @@
     <Folder Include="Controllers\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.RssSyncProfile.ContentType.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts.FeedSyncProfile.ContentType.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Placement.info" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\EditorTemplates\Parts.RssSyncProfile.Mappings.cshtml" />
+    <Content Include="Views\EditorTemplates\Parts.FeedSyncProfile.Mappings.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

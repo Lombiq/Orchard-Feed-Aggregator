@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.RssReader.Constants
+namespace Lombiq.FeedAggregator.Constants
 {
     public static class Common
     {

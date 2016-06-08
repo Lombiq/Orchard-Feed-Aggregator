@@ -5,16 +5,16 @@ using System.Web;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 
-namespace Lombiq.RssReader.Services
+namespace Lombiq.FeedAggregator.Services
 {
-    public class RssFeedDataSavingService : IRssFeedDataSavingService
+    public class FeedDataSavingService : IFeedDataSavingService
     {
-        private readonly IEnumerable<IRssFeedDataSavingProvider> _providers;
+        private readonly IEnumerable<IFeedDataSavingProvider> _providers;
         private readonly IContentDefinitionManager _contentDefinitionManager;
 
 
-        public RssFeedDataSavingService(
-            IEnumerable<IRssFeedDataSavingProvider> providers,
+        public FeedDataSavingService(
+            IEnumerable<IFeedDataSavingProvider> providers,
             IContentDefinitionManager contentDefinitionManager)
         {
             _providers = providers;

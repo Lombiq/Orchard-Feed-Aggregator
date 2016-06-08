@@ -4,9 +4,9 @@ using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
 
-namespace Lombiq.RssReader.Models
+namespace Lombiq.FeedAggregator.Models
 {
-    public class RssFeedDataSavingProviderContext : IRssFeedDataSavingProviderContext
+    public class FeedDataSavingProviderContext : IFeedDataSavingProviderContext
     {
         public IContent Content { get; set; }
 

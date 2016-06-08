@@ -1,7 +1,7 @@
 ﻿<Placement>
 
-  <!-- Create new RssSyncProfile -->
-  <Match Path="/Admin/Contents/Create/RssSyncProfile">
+  <!-- Create new FeedSyncProfile -->
+  <Match Path="/Admin/Contents/Create/FeedSyncProfile">
     <Place Parts_Title_Edit ="-"
            Fields_Common_Text_Edit = "-"
            Fields_Numeric_Edit = "-"
@@ -9,12 +9,12 @@
            />
   </Match>
 
-  <!-- Edit RssSyncProfile -->
+  <!-- Edit FeedSyncProfile -->
   <Match Path="/Admin/Contents/Edit/*">
-    <Place Parts_RssSyncProfile_Mappings_Edit ="Content: 2"
+    <Place Parts_FeedSyncProfile_Mappings_Edit ="Content: 2"
            />
   </Match>
 
-  <Place Parts_RssSyncProfile_ContentType_Edit = "Content: 1" />
+  <Place Parts_FeedSyncProfile_ContentType_Edit = "Content: 1" />
 
 </Placement>

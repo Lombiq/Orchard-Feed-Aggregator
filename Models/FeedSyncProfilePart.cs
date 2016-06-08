@@ -1,5 +1,5 @@
-﻿using Lombiq.RssReader.Constants;
-using Lombiq.RssReader.Models.NonPersistent;
+﻿using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Utilities;
 using System;
@@ -10,9 +10,9 @@ using Piedone.HelpfulLibraries.Contents;
 using Orchard.Fields.Fields;
 using Orchard.Core.Common.Fields;
 
-namespace Lombiq.RssReader.Models
+namespace Lombiq.FeedAggregator.Models
 {
-    public class RssSyncProfilePart : ContentPart
+    public class FeedSyncProfilePart : ContentPart
     {
         public string ContentType
         {
@@ -50,18 +50,18 @@ namespace Lombiq.RssReader.Models
             get
             {
                 return this.AsField<NumericField>(
-                    typeof(RssSyncProfilePart).Name,
+                    typeof(FeedSyncProfilePart).Name,
                     FieldNames.MinutesBetweenSyncs).Value;
             }
         }
 
-        public string RssFeedUrl
+        public string FeedUrl
         {
             get
             {
                 return this.AsField<TextField>(
-                    typeof(RssSyncProfilePart).Name,
-                    FieldNames.RssFeedUrl).Value;
+                    typeof(FeedSyncProfilePart).Name,
+                    FieldNames.FeedUrl).Value;
             }
         }
     }

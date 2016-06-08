@@ -5,17 +5,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.RssReader.Models
+namespace Lombiq.FeedAggregator.Models
 {
-    public class RssSyncProfileItemPart : ContentPart<RssSyncProfileItemPartRecord>
+    public class FeedSyncProfileItemPart : ContentPart<FeedSyncProfileItemPartRecord>
     {
         /// <summary>
-        /// The id of the correspondig RssSyncProfile.
+        /// The id of the correspondig FeedSyncProfile.
         /// </summary>
-        public int RssSyncProfileId
+        public int FeedSyncProfileId
         {
-            get { return Retrieve(x => x.RssSyncProfileId); }
-            set { Store(x => x.RssSyncProfileId, value); }
+            get { return Retrieve(x => x.FeedSyncProfileId); }
+            set { Store(x => x.FeedSyncProfileId, value); }
         }
 
         /// <summary>
@@ -31,9 +31,9 @@ namespace Lombiq.RssReader.Models
         }
     }
 
-    public class RssSyncProfileItemPartRecord : ContentPartRecord
+    public class FeedSyncProfileItemPartRecord : ContentPartRecord
     {
-        public virtual int RssSyncProfileId { get; set; }
+        public virtual int FeedSyncProfileId { get; set; }
         public virtual string FeedItemId { get; set; }
     }
 }

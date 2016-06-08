@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using Orchard.ContentManagement;
-using Lombiq.RssReader.Models;
+using Lombiq.FeedAggregator.Models;
 
-namespace Lombiq.RssReader.Services
+namespace Lombiq.FeedAggregator.Services
 {
-    public class TextFieldSavingProvider : IRssFeedDataSavingProvider
+    public class TextFieldSavingProvider : IFeedDataSavingProvider
     {
         public string ProviderType
         {
@@ -17,7 +17,7 @@ namespace Lombiq.RssReader.Services
             }
         }
 
-        public void Save(IRssFeedDataSavingProviderContext context)
+        public void Save(IFeedDataSavingProviderContext context)
         {
 
         }

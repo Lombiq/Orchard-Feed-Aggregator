@@ -4,11 +4,11 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 
-namespace Lombiq.RssReader.ViewModels
+namespace Lombiq.FeedAggregator.ViewModels
 {
     public class MappingViewModel
     {
         public IEnumerable<SelectListItem> ContentItemStorageMappingSelectList { get; set; }
-        public string RssMapping { get; set; }
+        public string FeedMapping { get; set; }
     }
 }

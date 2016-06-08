@@ -1,5 +1,5 @@
-﻿using Lombiq.RssReader.Constants;
-using Lombiq.RssReader.Models;
+﻿using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Models;
 using Orchard.Logging;
 using System;
 using System.Collections.Generic;
@@ -9,7 +9,7 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Lombiq.RssReader.Services
+namespace Lombiq.FeedAggregator.Services
 {
     public class FeedManager : IFeedManager
     {
@@ -22,13 +22,13 @@ namespace Lombiq.RssReader.Services
         }
 
 
-        public bool TryGetValidFeedType(RssSyncProfilePart rssSyncProfilePart, out string feedType)
+        public bool TryGetValidFeedType(FeedSyncProfilePart feedSyncProfilePart, out string feedType)
         {
             feedType = "";
 
             try
             {
-                var feedXml = XDocument.Load(rssSyncProfilePart.RssFeedUrl);
+                var feedXml = XDocument.Load(feedSyncProfilePart.FeedUrl);
 
                 // Checking if the feed is a valid RSS.
                 if (feedXml.Root.Name.LocalName == "rss")

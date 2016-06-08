@@ -1,35 +1,35 @@
-﻿using Lombiq.RssReader.Constants;
-using Lombiq.RssReader.Models;
+﻿using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Extensions;
 using Orchard.Data.Migration;
 
-namespace Lombiq.RssReader.Migrations
+namespace Lombiq.FeedAggregator.Migrations
 {
-    public class RssSyncProfilePartMigrations : DataMigrationImpl
+    public class FeedSyncProfilePartMigrations : DataMigrationImpl
     {
         public int Create()
         {
             ContentDefinitionManager.AlterPartDefinition(
-                typeof(RssSyncProfilePart).Name,
+                typeof(FeedSyncProfilePart).Name,
                 part => part
                     .Attachable(false)
-                    .WithField(FieldNames.RssFeedUrl, field => field
+                    .WithField(FieldNames.FeedUrl, field => field
                         .OfType("TextField")
-                        .WithDisplayName("Rss Feed Url")
+                        .WithDisplayName("Feed Url")
                         .WithSetting("TextFieldSettings.Required", "True")
-                        .WithSetting("TextFieldSettings.Hint", "The Url of the RSS feed to sync."))
+                        .WithSetting("TextFieldSettings.Hint", "The Url of the feed to sync."))
                     .WithField(FieldNames.NumberOfItemsToSyncDuringInit, field => field
                         .OfType("NumericField")
                         .WithDisplayName("Number Of Items To Sync During Init")
                         .WithSetting("NumericFieldSettings.Required", "True")
-                        .WithSetting("NumericFieldSettings.Hint", "This many items will be creadted during the init. The init happens only once and if the set number is 0, then won't be created any items during init. If the RSS feed isn't pageable, only as many items will be created as many items are available.")
+                        .WithSetting("NumericFieldSettings.Hint", "This many items will be creadted during the init. The init happens only once and if the set number is 0, then won't be created any items during init. If the feed isn't pageable, only as many items will be created as many items are available in the first page.")
                         .WithSetting("NumericFieldSettings.Minimum", "0"))
                     .WithField(FieldNames.MinutesBetweenSyncs, field => field
                         .OfType("NumericField")
                         .WithDisplayName("Minutes Between Syncs")
                         .WithSetting("NumericFieldSettings.Required", "True")
-                        .WithSetting("NumericFieldSettings.Hint", "A background task will check the RSS feed for new entries.")
+                        .WithSetting("NumericFieldSettings.Hint", "A background task will check the feed for new entries.")
                         .WithSetting("NumericFieldSettings.Minimum", "1"))
                     .WithField(FieldNames.Container, field => field
                         .OfType("ContentPickerField")
@@ -39,13 +39,13 @@ namespace Lombiq.RssReader.Migrations
                         .WithSetting("ContentPickerFieldSettings.Multiple", "False")));
 
             ContentDefinitionManager.AlterTypeDefinition(
-                ContentTypes.RssSyncProfile,
+                ContentTypes.FeedSyncProfile,
                 cfg => cfg
-                    .WithPart(typeof(RssSyncProfilePart).Name)
+                    .WithPart(typeof(FeedSyncProfilePart).Name)
                     .Creatable()
                     .Listable()
                     .Securable()
-                    .DisplayedAs("Rss Sync Profile")
+                    .DisplayedAs("Feed Sync Profile")
                     .WithPart("TitlePart")
                     .WithPart("CommonPart",
                         part => part
