@@ -10,6 +10,7 @@ using Orchard.Localization;
 using Orchard.Services;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.RegularExpressions;
 using System.Web.Mvc;
 
 namespace Lombiq.FeedAggregator.Drivers
@@ -159,7 +160,7 @@ namespace Lombiq.FeedAggregator.Drivers
                         string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
-                part.MappingsSerialized = _jsonConverter.Serialize(part.Mappings);
+                part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
             }
 
             return Editor(part, shapeHelper);
