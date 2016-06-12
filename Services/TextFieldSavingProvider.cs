@@ -16,8 +16,8 @@ namespace Lombiq.FeedAggregator.Services
 
 
         public TextFieldSavingProvider(
-            IContentDefinitionManager contentDefinitionManager) :
-            base(contentDefinitionManager)
+            IContentDefinitionManager contentDefinitionManager, IContentManager contentManager) :
+            base(contentDefinitionManager, contentManager)
         {
         }
 

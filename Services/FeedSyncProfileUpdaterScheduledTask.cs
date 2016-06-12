@@ -84,7 +84,7 @@ namespace Lombiq.FeedAggregator.Services
                 var feedItemModificationDateNode = newEntry.Element(feedSyncProfilePart.FeedItemModificationDateType);
                 var feedItemModificationDate = new DateTime();
                 if (feedItemModificationDateNode == null ||
-                    DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
+                    !DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
 
                 var feedSyncProfileItem = _contentManager
                         .Query(feedSyncProfilePart.ContentType)
@@ -165,6 +165,14 @@ namespace Lombiq.FeedAggregator.Services
                 {
                     _contentManager.Remove(feedSyncProfileItem);
                 }
+            }
+
+            // If all went good but no items were created 
+            // (e.g. the number of items created is 0 or there weren't any valid entries), 
+            // that means the init logic shouldn't run again, so we set the last created date to now.
+            if (feedSyncProfilePart.LatestCreatedItemDate == default(DateTime))
+            {
+                feedSyncProfilePart.LatestCreatedItemDate = _clock.UtcNow;
             }
         }
 

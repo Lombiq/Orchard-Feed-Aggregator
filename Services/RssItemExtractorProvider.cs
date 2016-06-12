@@ -38,15 +38,24 @@ namespace Lombiq.FeedAggregator.Services
 
                 foreach (var feedItem in feedItems)
                 {
+                    // If this is the init and the init count is more than the set one.
+                    if (feedSyncProfilePart.LatestCreatedItemDate == default(DateTime) &&
+                        newEntries.Count() >= feedSyncProfilePart.NumberOfItemsToSyncDuringInit)
+                    {
+                        break;
+                    }
+
                     var pubDateElement = feedItem.Element("pubDate");
                     var idElement = feedItem.Element(feedSyncProfilePart.FeedItemIdType);
-                    if (pubDateElement == null || idElement == null)
+                    var modificationDate = new DateTime();
+                    if (pubDateElement == null ||
+                        idElement == null ||
+                        !DateTime.TryParse(pubDateElement.Value, out modificationDate))
                     {
                         continue;
                     }
 
-                    if (Convert.ToDateTime(pubDateElement.Value).ToUniversalTime() <=
-                        feedSyncProfilePart.LatestCreatedItemDate)
+                    if (modificationDate.ToUniversalTime() <= feedSyncProfilePart.LatestCreatedItemDate)
                     {
                         break;
                     }

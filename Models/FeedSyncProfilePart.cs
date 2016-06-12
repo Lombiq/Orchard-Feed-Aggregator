@@ -70,5 +70,15 @@ namespace Lombiq.FeedAggregator.Models
                     FieldNames.FeedUrl).Value;
             }
         }
+
+        public decimal? NumberOfItemsToSyncDuringInit
+        {
+            get
+            {
+                return this.AsField<NumericField>(
+                    typeof(FeedSyncProfilePart).Name,
+                    FieldNames.NumberOfItemsToSyncDuringInit).Value;
+            }
+        }
     }
 }

@@ -14,8 +14,8 @@ namespace Lombiq.FeedAggregator.Services
 
 
         public TitlePartSavingProvider(
-            IContentDefinitionManager contentDefinitionManager)
-            : base(contentDefinitionManager)
+            IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
+            : base(contentDefinitionManager, contentManager)
         {
         }
 
