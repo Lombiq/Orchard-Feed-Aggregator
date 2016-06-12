@@ -7,6 +7,7 @@ using System.Xml;
 using System.Xml.Linq;
 using System.IO;
 using Orchard.Logging;
+using Lombiq.FeedAggregator.Helpers;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -31,7 +32,7 @@ namespace Lombiq.FeedAggregator.Services
             try
             {
                 var feedXml = XDocument.Load(feedSyncProfilePart.FeedUrl);
-                var channelElement = feedXml.Root.Element("channel");
+                var channelElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, ("channel"));
                 if (channelElement == null) return null;
                 var feedItems = channelElement.Descendants("item");
                 if (feedItems == null) return null;
@@ -39,14 +40,14 @@ namespace Lombiq.FeedAggregator.Services
                 foreach (var feedItem in feedItems)
                 {
                     // If this is the init and the init count is more than the set one.
-                    if (feedSyncProfilePart.LatestCreatedItemDate == default(DateTime) &&
+                    if (!feedSyncProfilePart.SuccesfulInit &&
                         newEntries.Count() >= feedSyncProfilePart.NumberOfItemsToSyncDuringInit)
                     {
                         break;
                     }
 
-                    var pubDateElement = feedItem.Element("pubDate");
-                    var idElement = feedItem.Element(feedSyncProfilePart.FeedItemIdType);
+                    var pubDateElement = XDocumentHelper.GetDescendantNodeByName(feedItem, "pubDate");
+                    var idElement = XDocumentHelper.GetDescendantNodeByName(feedItem, feedSyncProfilePart.FeedItemIdType);
                     var modificationDate = new DateTime();
                     if (pubDateElement == null ||
                         idElement == null ||

@@ -1,4 +1,5 @@
 ﻿using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Logging;
@@ -42,21 +43,21 @@ namespace Lombiq.FeedAggregator.Services
                 // Checking if the feed is a valid RSS.
                 if (feedXml.Root.Name.LocalName == "rss")
                 {
-                    var channelElement = feedXml.Root.Element("channel");
+                    var channelElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, "channel");
                     if (channelElement == null)
                     {
                         Logger.Error("Feed is invalid. No channel element.");
                         return false;
                     }
 
-                    var firstItemElement = channelElement.Element("item");
+                    var firstItemElement = XDocumentHelper.GetDescendantNodeByName(channelElement, "item");
                     if (firstItemElement == null)
                     {
                         Logger.Error("Feed is invalid. No item element.");
                         return false;
                     }
 
-                    var pubDateElement = firstItemElement.Element("pubDate");
+                    var pubDateElement = XDocumentHelper.GetDescendantNodeByName(firstItemElement, "pubDate");
                     if (pubDateElement == null)
                     {
                         Logger.Error("Feed is invalid. No pubDate element.");
@@ -76,11 +77,11 @@ namespace Lombiq.FeedAggregator.Services
                     // Since the feed is valid, set the id type.
                     else if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType))
                     {
-                        if (ElementContainsNodeWithName(firstItemElement, "guid"))
+                        if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "guid"))
                             feedSyncProfilePart.FeedItemIdType = "guid";
-                        else if (ElementContainsNodeWithName(firstItemElement, "title"))
+                        else if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "title"))
                             feedSyncProfilePart.FeedItemIdType = "title";
-                        else if (ElementContainsNodeWithName(firstItemElement, "description"))
+                        else if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "description"))
                             feedSyncProfilePart.FeedItemIdType = "description";
                     }
 
@@ -95,25 +96,22 @@ namespace Lombiq.FeedAggregator.Services
                     var xmlnsAttribute = feedXml.Root.Attribute("xmlns");
                     if (xmlnsAttribute != null && xmlnsAttribute.Value == "http://www.w3.org/2005/Atom")
                     {
-                        var firstEntryElement = feedXml
-                            .Root
-                            .Elements()
-                            .FirstOrDefault(element => element.Name.LocalName == "entry");
+                        var firstEntryElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, "entry");
                         if (firstEntryElement == null)
                         {
                             Logger.Error("Feed is invalid. No entry element.");
                             return false;
                         }
 
-                        var updatedElement = firstEntryElement.Element("updated");
-                        if (firstEntryElement == null)
+                        var updatedElement = XDocumentHelper.GetDescendantNodeByName(firstEntryElement, "updated");
+                        if (updatedElement == null)
                         {
                             Logger.Error("Feed is invalid. No updated element.");
                             return false;
                         }
 
-                        var idElement = firstEntryElement.Element("id");
-                        if (firstEntryElement == null)
+                        var idElement = XDocumentHelper.GetDescendantNodeByName(firstEntryElement, "id");
+                        if (idElement == null)
                         {
                             Logger.Error("Feed is invalid. No id element.");
                             return false;
@@ -174,12 +172,6 @@ namespace Lombiq.FeedAggregator.Services
             }
 
             return accessibleDataStorageNames;
-        }
-
-
-        private bool ElementContainsNodeWithName(XElement xElement, string name)
-        {
-            return xElement.Elements().Any(element => element.Name.LocalName == name);
         }
     }
 }

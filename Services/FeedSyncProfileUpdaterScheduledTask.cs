@@ -14,6 +14,7 @@ using System.Xml;
 using System.Xml.Linq;
 using Orchard.Logging;
 using Orchard.Core.Title.Models;
+using Orchard.Core.Common.Models;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -78,10 +79,10 @@ namespace Lombiq.FeedAggregator.Services
                 // Persisting must be happen only if at least one successful mapping saving happened.
                 var contentItemShouldBePersisted = false;
 
-                var feedItemIdNode = newEntry.Element(feedSyncProfilePart.FeedItemIdType);
+                var feedItemIdNode = XDocumentHelper.GetDescendantNodeByName(newEntry, feedSyncProfilePart.FeedItemIdType);
                 if (feedItemIdNode == null) continue;
                 var feedItemId = feedItemIdNode.Value;
-                var feedItemModificationDateNode = newEntry.Element(feedSyncProfilePart.FeedItemModificationDateType);
+                var feedItemModificationDateNode = XDocumentHelper.GetDescendantNodeByName(newEntry, feedSyncProfilePart.FeedItemModificationDateType);
                 var feedItemModificationDate = new DateTime();
                 if (feedItemModificationDateNode == null ||
                     !DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
@@ -104,7 +105,7 @@ namespace Lombiq.FeedAggregator.Services
                     // If it is an attribute mapping.
                     if (splitFeedMapping.Length > 1)
                     {
-                        var feedEntryNode = newEntry.Element(splitFeedMapping[0]);
+                        var feedEntryNode = XDocumentHelper.GetDescendantNodeByName(newEntry, splitFeedMapping[0]);
                         if (feedEntryNode == null) continue;
 
                         var feedEntryAttribute = feedEntryNode.Attribute(splitFeedMapping[1]);
@@ -115,7 +116,7 @@ namespace Lombiq.FeedAggregator.Services
                     // If it is node mapping,
                     else
                     {
-                        var feedEntryNode = newEntry.Element(mapping.FeedMapping);
+                        var feedEntryNode = XDocumentHelper.GetDescendantNodeByName(newEntry, mapping.FeedMapping);
                         if (feedEntryNode == null) continue;
 
                         feedEntryData = feedEntryNode.Value;
@@ -159,6 +160,17 @@ namespace Lombiq.FeedAggregator.Services
                     var feedSyncProfileItemPart = feedSyncProfileItem.As<FeedSyncProfileItemPart>();
                     if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId)) feedSyncProfileItemPart.FeedItemId = feedItemId;
                     feedSyncProfilePart.LatestCreatedItemDate = feedItemModificationDate;
+                    // Setting the content item's container.
+                    var container = feedSyncProfilePart.Container.ContentItems.ElementAt(0);
+                    if (container != null)
+                    {
+                        var commonPart = feedSyncProfileItem.As<CommonPart>();
+                        if (commonPart != null)
+                        {
+                            commonPart.Container = container;
+                        }
+                    }
+
                     _contentManager.Publish(feedSyncProfileItem);
                 }
                 else
@@ -167,13 +179,8 @@ namespace Lombiq.FeedAggregator.Services
                 }
             }
 
-            // If all went good but no items were created 
-            // (e.g. the number of items created is 0 or there weren't any valid entries), 
-            // that means the init logic shouldn't run again, so we set the last created date to now.
-            if (feedSyncProfilePart.LatestCreatedItemDate == default(DateTime))
-            {
-                feedSyncProfilePart.LatestCreatedItemDate = _clock.UtcNow;
-            }
+            feedSyncProfilePart.SuccesfulInit = true;
+            feedSyncProfilePart.LatestCreatedItemDate = _clock.UtcNow;
         }
 
         public void Activated()

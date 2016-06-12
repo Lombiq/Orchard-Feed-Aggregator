@@ -9,6 +9,7 @@ using System.Web;
 using Piedone.HelpfulLibraries.Contents;
 using Orchard.Fields.Fields;
 using Orchard.Core.Common.Fields;
+using Orchard.ContentPicker.Fields;
 
 namespace Lombiq.FeedAggregator.Models
 {
@@ -36,6 +37,12 @@ namespace Lombiq.FeedAggregator.Models
         {
             get { return this.Retrieve(x => x.FeedItemModificationDateType); }
             set { this.Store(x => x.FeedItemModificationDateType, value); }
+        }
+
+        public bool SuccesfulInit
+        {
+            get { return this.Retrieve(x => x.SuccesfulInit); }
+            set { this.Store(x => x.SuccesfulInit, value); }
         }
 
         /// <summary>
@@ -78,6 +85,16 @@ namespace Lombiq.FeedAggregator.Models
                 return this.AsField<NumericField>(
                     typeof(FeedSyncProfilePart).Name,
                     FieldNames.NumberOfItemsToSyncDuringInit).Value;
+            }
+        }
+
+        public ContentPickerField Container
+        {
+            get
+            {
+                return this.AsField<ContentPickerField>(
+                    typeof(FeedSyncProfilePart).Name,
+                    FieldNames.Container);
             }
         }
     }
