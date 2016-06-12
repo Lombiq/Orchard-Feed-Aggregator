@@ -82,8 +82,9 @@ namespace Lombiq.FeedAggregator.Services
                 if (feedItemIdNode == null) continue;
                 var feedItemId = feedItemIdNode.Value;
                 var feedItemModificationDateNode = newEntry.Element(feedSyncProfilePart.FeedItemModificationDateType);
-                if (feedItemModificationDateNode == null) continue;
-                var feedItemModificationDate = feedItemModificationDateNode.Value;
+                var feedItemModificationDate = new DateTime();
+                if (feedItemModificationDateNode == null ||
+                    DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
 
                 var feedSyncProfileItem = _contentManager
                         .Query(feedSyncProfilePart.ContentType)
@@ -157,7 +158,7 @@ namespace Lombiq.FeedAggregator.Services
                     // on the FeedSyncProfilePart and set the FeedItemId if it not set yet.
                     var feedSyncProfileItemPart = feedSyncProfileItem.As<FeedSyncProfileItemPart>();
                     if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId)) feedSyncProfileItemPart.FeedItemId = feedItemId;
-                    feedSyncProfilePart.LatestCreatedItemDate = Convert.ToDateTime(feedItemModificationDate);
+                    feedSyncProfilePart.LatestCreatedItemDate = feedItemModificationDate;
                     _contentManager.Publish(feedSyncProfileItem);
                 }
                 else
