@@ -7,6 +7,9 @@ using System.Web;
 
 namespace Lombiq.FeedAggregator.Services
 {
+    /// <summary>
+    /// Service for the feed related operations.
+    /// </summary>
     public interface IFeedManager : IDependency
     {
         /// <summary>
@@ -16,9 +19,12 @@ namespace Lombiq.FeedAggregator.Services
         /// </summary>
         /// <param name="feedSyncProfilePart">The FeedSyncProfilePart</param>
         /// <param name="feedType">The type of the feed.</param>
-        /// <returns></returns>
         bool TryGetValidFeedType(FeedSyncProfilePart feedSyncProfilePart, out string feedType);
 
+        /// <summary>
+        /// Returns the available content item storage names on the type.
+        /// </summary>
+        /// <param name="contentType">The content type.</param>
         IList<string> GetAccessibleContentItemStorageNames(string contentType);
     }
 }

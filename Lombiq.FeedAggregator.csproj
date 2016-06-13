@@ -149,9 +149,7 @@
   <ItemGroup>
     <Content Include="Readme.md" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.FeedSyncProfile.ContentType.cshtml" />
   </ItemGroup>
