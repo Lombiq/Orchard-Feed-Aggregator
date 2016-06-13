@@ -102,13 +102,13 @@ namespace Lombiq.FeedAggregator.Services
                 {
                     var feedEntryData = "";
                     var splitFeedMapping = mapping.FeedMapping.Split('.');
+                    XElement selectedNodeInFeedEntry;
+                    if (!XDocumentHelper.TryGetNodeByPath(newEntry, splitFeedMapping[0], out selectedNodeInFeedEntry))
+                        continue;
                     // If it is an attribute mapping.
                     if (splitFeedMapping.Length > 1)
                     {
-                        var feedEntryNode = XDocumentHelper.GetDescendantNodeByName(newEntry, splitFeedMapping[0]);
-                        if (feedEntryNode == null) continue;
-
-                        var feedEntryAttribute = feedEntryNode.Attribute(splitFeedMapping[1]);
+                        var feedEntryAttribute = selectedNodeInFeedEntry.Attribute(splitFeedMapping[1]);
                         if (feedEntryAttribute == null) continue;
 
                         feedEntryData = feedEntryAttribute.Value;
@@ -116,14 +116,11 @@ namespace Lombiq.FeedAggregator.Services
                     // If it is node mapping,
                     else
                     {
-                        var feedEntryNode = XDocumentHelper.GetDescendantNodeByName(newEntry, mapping.FeedMapping);
-                        if (feedEntryNode == null) continue;
-
                         // This is necessary, because sometimes the node contains another node as the actual content.
                         // E.g. img element.
-                        feedEntryData = string.IsNullOrEmpty(feedEntryNode.Value)
-                            ? string.Join("", feedEntryNode.Nodes().Select(x => x.ToString()).ToArray())
-                            : feedEntryNode.Value;
+                        feedEntryData = string.IsNullOrEmpty(selectedNodeInFeedEntry.Value)
+                            ? string.Join("", selectedNodeInFeedEntry.Nodes().Select(x => x.ToString()).ToArray())
+                            : selectedNodeInFeedEntry.Value;
                     }
 
                     var successfulMappingSaving = false;

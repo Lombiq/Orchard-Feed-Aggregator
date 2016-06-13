@@ -34,5 +34,17 @@ namespace Lombiq.FeedAggregator.Helpers
         {
             return xElement.Elements().Any(element => element.Name.LocalName == name);
         }
+
+        public static bool TryGetNodeByPath(XElement parentNode, string path, out XElement selectedNode)
+        {
+            selectedNode = parentNode;
+            foreach (var pathFragment in path.Split('/'))
+            {
+                selectedNode = GetDescendantNodeByName(selectedNode, pathFragment);
+                if (selectedNode == null) return false;
+            }
+
+            return true;
+        }
     }
 }

@@ -104,6 +104,7 @@
     <Compile Include="Services\NumericFieldSavingProvider.cs" />
     <Compile Include="Services\RssItemExtractorProvider.cs" />
     <Compile Include="Services\TagsPartSavingProvider.cs" />
+    <Compile Include="Services\LinkFieldSavingProvider.cs" />
     <Compile Include="Services\TextFieldSavingProvider.cs" />
     <Compile Include="Services\TitlePartSavingProvider.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
