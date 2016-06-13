@@ -71,7 +71,6 @@
     <Reference Include="System.Xml.Linq" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Constants\Common.cs" />
     <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Constants\FieldNames.cs" />
     <Compile Include="Constants\TaskTypes.cs" />
