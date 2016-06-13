@@ -66,6 +66,20 @@ namespace Lombiq.FeedAggregator.Drivers
                         var accessibleContentItemStorageNames = _feedManager
                             .GetAccessibleContentItemStorageNames(part.ContentType);
 
+                        // Setting the smart defaults.
+                        if (part.Mappings.Count() == 0)
+                        {
+                            if (accessibleContentItemStorageNames.Contains("TitlePart"))
+                            {
+                                part.Mappings.Add(new Mapping { FeedMapping = "title", ContentItemStorageMapping = "TitlePart" });
+                            }
+
+                            if (accessibleContentItemStorageNames.Contains("BodyPart"))
+                            {
+                                part.Mappings.Add(new Mapping { FeedMapping = "description", ContentItemStorageMapping = "BodyPart" });
+                            }
+                        }
+
                         // If a mapping data storage no longer available or the feed node field is empty,
                         // then delete it from the mappings.
                         part
