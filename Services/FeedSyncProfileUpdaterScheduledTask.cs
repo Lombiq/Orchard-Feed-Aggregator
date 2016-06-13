@@ -161,7 +161,9 @@ namespace Lombiq.FeedAggregator.Services
                     if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId)) feedSyncProfileItemPart.FeedItemId = feedItemId;
                     feedSyncProfilePart.LatestCreatedItemDate = feedItemModificationDate;
                     // Setting the content item's container.
-                    var container = feedSyncProfilePart.Container.ContentItems.ElementAt(0);
+                    var container = feedSyncProfilePart.Container.ContentItems.Count() == 0
+                        ? null
+                        : feedSyncProfilePart.Container.ContentItems.ElementAt(0);
                     if (container != null)
                     {
                         var commonPart = feedSyncProfileItem.As<CommonPart>();

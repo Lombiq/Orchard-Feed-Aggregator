@@ -90,13 +90,17 @@
     <Compile Include="Models\FeedSyncProfilePart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AtomEntryExtractorProvider.cs" />
+    <Compile Include="Services\BodyPartSavingProvider.cs" />
+    <Compile Include="Services\BooleanFieldSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviderBase.cs" />
     <Compile Include="Services\FeedManager.cs" />
     <Compile Include="Services\IFeedEntryExtractorProvider.cs" />
     <Compile Include="Services\IFeedManager.cs" />
     <Compile Include="Services\IFeedDataSavingProvider.cs" />
     <Compile Include="Services\FeedSyncProfileUpdaterScheduledTask.cs" />
+    <Compile Include="Services\NumericFieldSavingProvider.cs" />
     <Compile Include="Services\RssItemExtractorProvider.cs" />
+    <Compile Include="Services\TagsPartSavingProvider.cs" />
     <Compile Include="Services\TextFieldSavingProvider.cs" />
     <Compile Include="Services\TitlePartSavingProvider.cs" />
     <Compile Include="ViewModels\MappingViewModel.cs" />
@@ -125,6 +129,10 @@
     <ProjectReference Include="..\Orchard.Fields\Orchard.Fields.csproj">
       <Project>{3787DDE5-E5C8-4841-BDA7-DCB325388064}</Project>
       <Name>Orchard.Fields</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Orchard.Tags\Orchard.Tags.csproj">
+      <Project>{5D0F00F0-26C9-4785-AD61-B85710C60EB0}</Project>
+      <Name>Orchard.Tags</Name>
     </ProjectReference>
     <ProjectReference Include="..\Piedone.HelpfulLibraries\Piedone.HelpfulLibraries.csproj">
       <Project>{ea61ad10-39d6-41a9-b12b-227f50c54158}</Project>

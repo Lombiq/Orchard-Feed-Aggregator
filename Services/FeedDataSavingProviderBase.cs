@@ -6,20 +6,17 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
-using Piedone.HelpfulLibraries.Contents;
 
 namespace Lombiq.FeedAggregator.Services
 {
     public class FeedDataSavingProviderBase
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
-        private readonly IContentManager _contentManager;
 
 
-        public FeedDataSavingProviderBase(IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
+        public FeedDataSavingProviderBase(IContentDefinitionManager contentDefinitionManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
-            _contentManager = contentManager;
         }
 
 
@@ -29,7 +26,22 @@ namespace Lombiq.FeedAggregator.Services
             // If it is a field mapping.
             if (splitMapping.Length > 1)
             {
-                return _contentManager.New(feedSyncProfileItemContentType).HasField(splitMapping[0], splitMapping[1]);
+                var typeDefinition = _contentDefinitionManager.GetTypeDefinition(feedSyncProfileItemContentType);
+                if (typeDefinition == null) return false;
+
+                // Checking for the field in the content type.
+                var contentTypePartDefinition = typeDefinition
+                    .Parts
+                    .FirstOrDefault(part => part.PartDefinition.Name == splitMapping[0]);
+
+                if (contentTypePartDefinition == null) return false;
+
+                var contentPartFieldDefinition = contentTypePartDefinition
+                    .PartDefinition
+                    .Fields
+                    .FirstOrDefault(field => field.DisplayName == splitMapping[1] && field.FieldDefinition.Name == providerType);
+
+                return contentPartFieldDefinition != null;
             }
             // If it is a part mapping.
             else

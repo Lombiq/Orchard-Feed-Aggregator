@@ -5,6 +5,7 @@ using System.Web;
 using Orchard.ContentManagement;
 using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement.MetaData;
+using Orchard.Core.Title.Models;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -14,15 +15,21 @@ namespace Lombiq.FeedAggregator.Services
 
 
         public TitlePartSavingProvider(
-            IContentDefinitionManager contentDefinitionManager, IContentManager contentManager)
-            : base(contentDefinitionManager, contentManager)
+            IContentDefinitionManager contentDefinitionManager)
+            : base(contentDefinitionManager)
         {
         }
 
 
         public bool Save(IFeedDataSavingProviderContext context)
         {
-            if (!ProviderIsSuitable(context.Mapping, ProviderType, context.FeedSyncProfilePart.ContentType)) return false;
+            if (!ProviderIsSuitable(context.Mapping, ProviderType, context.FeedSyncProfilePart.ContentType))
+                return false;
+
+            var titlePart = context.Content.As<TitlePart>();
+            if (titlePart == null) return false;
+
+            titlePart.Title = context.Data;
 
             return true;
         }
