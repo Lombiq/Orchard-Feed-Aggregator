@@ -119,7 +119,11 @@ namespace Lombiq.FeedAggregator.Services
                         var feedEntryNode = XDocumentHelper.GetDescendantNodeByName(newEntry, mapping.FeedMapping);
                         if (feedEntryNode == null) continue;
 
-                        feedEntryData = feedEntryNode.Value;
+                        // This is necessary, because sometimes the node contains another node as the actual content.
+                        // E.g. img element.
+                        feedEntryData = string.IsNullOrEmpty(feedEntryNode.Value)
+                            ? string.Join("", feedEntryNode.Nodes().Select(x => x.ToString()).ToArray())
+                            : feedEntryNode.Value;
                     }
 
                     var successfulMappingSaving = false;

@@ -148,14 +148,18 @@ namespace Lombiq.FeedAggregator.Services
 
             foreach (var provider in _providers)
             {
+                var splitProviderType = provider.ProviderType.Split('.');
+                var partName = splitProviderType.Length == 1 ? provider.ProviderType : splitProviderType[0];
                 var partOnContentItem = typeDefinition
                     .Parts
-                    .FirstOrDefault(part => part.PartDefinition.Name == provider.ProviderType);
+                    .FirstOrDefault(part => part.PartDefinition.Name == partName);
 
+                // If such part exists on the type, then it's a part provider.
                 if (partOnContentItem != null)
                 {
                     accessibleDataStorageNames.Add(provider.ProviderType);
                 }
+                // If no such part on the type, then it's a field provider.
                 else
                 {
                     foreach (var part in typeDefinition.Parts)

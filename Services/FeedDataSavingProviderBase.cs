@@ -22,32 +22,27 @@ namespace Lombiq.FeedAggregator.Services
 
         public bool ProviderIsSuitable(Mapping mapping, string providerType, string feedSyncProfileItemContentType)
         {
+            // It can be a simple part or a complex part.property mapping.
+            if (mapping.ContentItemStorageMapping == providerType) return true;
+
+            // If it isn't a part mapping, then it can be a field mapping.
+            var typeDefinition = _contentDefinitionManager.GetTypeDefinition(feedSyncProfileItemContentType);
+            if (typeDefinition == null) return false;
+
+            // Checking for the part in the content type. If no such part, then it isn't suitable.
             var splitMapping = mapping.ContentItemStorageMapping.Split('.');
-            // If it is a field mapping.
-            if (splitMapping.Length > 1)
-            {
-                var typeDefinition = _contentDefinitionManager.GetTypeDefinition(feedSyncProfileItemContentType);
-                if (typeDefinition == null) return false;
+            var contentTypePartDefinition = typeDefinition
+                .Parts
+                .FirstOrDefault(part => part.PartDefinition.Name == splitMapping[0]);
+            if (contentTypePartDefinition == null) return false;
 
-                // Checking for the field in the content type.
-                var contentTypePartDefinition = typeDefinition
-                    .Parts
-                    .FirstOrDefault(part => part.PartDefinition.Name == splitMapping[0]);
+            // Checking for a field with the name.
+            var contentPartFieldDefinition = contentTypePartDefinition
+                .PartDefinition
+                .Fields
+                .FirstOrDefault(field => field.DisplayName == splitMapping[1] && field.FieldDefinition.Name == providerType);
 
-                if (contentTypePartDefinition == null) return false;
-
-                var contentPartFieldDefinition = contentTypePartDefinition
-                    .PartDefinition
-                    .Fields
-                    .FirstOrDefault(field => field.DisplayName == splitMapping[1] && field.FieldDefinition.Name == providerType);
-
-                return contentPartFieldDefinition != null;
-            }
-            // If it is a part mapping.
-            else
-            {
-                return mapping.ContentItemStorageMapping == providerType;
-            }
+            return contentPartFieldDefinition != null;
         }
     }
 }

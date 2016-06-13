@@ -92,6 +92,9 @@
     <Compile Include="Services\AtomEntryExtractorProvider.cs" />
     <Compile Include="Services\BodyPartSavingProvider.cs" />
     <Compile Include="Services\BooleanFieldSavingProvider.cs" />
+    <Compile Include="Services\CommonPartModifiedUtcSavingProvider.cs" />
+    <Compile Include="Services\CommonPartPublishedUtcSavingProvider.cs" />
+    <Compile Include="Services\CommonPartCreatedUtcSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviderBase.cs" />
     <Compile Include="Services\FeedManager.cs" />
     <Compile Include="Services\IFeedEntryExtractorProvider.cs" />
