@@ -3,9 +3,6 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Models;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -21,7 +18,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 
         public bool Save(IFeedDataSavingProviderContext context)
         {
-            if (!ProviderIsSuitable(context.Mapping, ProviderType, context.FeedSyncProfilePart.ContentType))
+            if (!ProviderIsSuitable(context.Mapping, context.FeedSyncProfilePart.ContentType))
                 return false;
 
             var commonPart = context.Content.As<CommonPart>();

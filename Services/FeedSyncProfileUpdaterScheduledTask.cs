@@ -1,23 +1,21 @@
-﻿using Orchard.Environment;
+﻿using Lombiq.FeedAggregator.Constants;
+using Lombiq.FeedAggregator.Extensions;
+using Lombiq.FeedAggregator.Helpers;
+using Lombiq.FeedAggregator.Models;
+using Lombiq.FeedAggregator.Services.ExtractorProviders;
+using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
+using Orchard.ContentManagement;
+using Orchard.Core.Common.Models;
+using Orchard.Core.Title.Models;
+using Orchard.Environment;
+using Orchard.Logging;
 using Orchard.Services;
 using Orchard.Tasks.Scheduling;
+using Piedone.HelpfulLibraries.Tasks;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using Piedone.HelpfulLibraries.Tasks;
-using Orchard.ContentManagement;
-using Lombiq.FeedAggregator.Constants;
-using Lombiq.FeedAggregator.Models;
-using Lombiq.FeedAggregator.Helpers;
-using System.Xml;
 using System.Xml.Linq;
-using Orchard.Logging;
-using Orchard.Core.Title.Models;
-using Orchard.Core.Common.Models;
-using Lombiq.FeedAggregator.Extensions;
-using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
-using Lombiq.FeedAggregator.Services.ExtractorProviders;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -197,7 +195,9 @@ namespace Lombiq.FeedAggregator.Services
             }
         }
 
-        public void Terminating() { }
+        public void Terminating()
+        {
+        }
 
 
         private void Renew(bool calledFromTaskProcess, ContentItem contentItem)

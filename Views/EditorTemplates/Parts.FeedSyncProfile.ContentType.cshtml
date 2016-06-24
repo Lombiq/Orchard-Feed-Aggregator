@@ -4,14 +4,13 @@
     <ol>
         <li>
             @Html.LabelFor(m => m.FeedSyncProfilePart.ContentType, T("Content type"))
-            @if (string.IsNullOrEmpty(Model.FeedSyncProfilePart.ContentType))
+            @if (Model.FeedSyncProfilePart.PublishingCount >= 1)
             {
-                @Html.DropDownList("ContentType", Model.CompatibleContentTypes)
+                @Html.DropDownList("ContentType", Model.CompatibleContentTypes, new { disabled = true })
             }
             else
             {
-                @Html.DropDownList("ContentType", Model.CompatibleContentTypes, new { disabled = true })
-
+                @Html.DropDownList("ContentType", Model.CompatibleContentTypes)
             }
             @Html.Hint(T("A content item with this type will be created. Only types with FeedSyncProfileItemPart attached can be selected. You have to select this first and you can't change it later."))
         </li>

@@ -1,9 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement;
-using Lombiq.FeedAggregator.Models.NonPersistent;
 
 namespace Lombiq.FeedAggregator.Models
 {

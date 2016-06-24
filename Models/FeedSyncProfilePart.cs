@@ -2,14 +2,13 @@
 using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Utilities;
+using Orchard.ContentPicker.Fields;
+using Orchard.Core.Common.Fields;
+using Orchard.Fields.Fields;
+using Piedone.HelpfulLibraries.Contents;
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using Piedone.HelpfulLibraries.Contents;
-using Orchard.Fields.Fields;
-using Orchard.Core.Common.Fields;
-using Orchard.ContentPicker.Fields;
+using System.ComponentModel.DataAnnotations;
 
 namespace Lombiq.FeedAggregator.Models
 {
@@ -45,6 +44,19 @@ namespace Lombiq.FeedAggregator.Models
             set { this.Store(x => x.SuccesfulInit, value); }
         }
 
+        public int PublishingCount
+        {
+            get { return this.Retrieve(x => x.PublishingCount); }
+            set { this.Store(x => x.PublishingCount, value); }
+        }
+
+        [Required]
+        public int NumberOfItemsToSyncDuringInit
+        {
+            get { return this.Retrieve(x => x.NumberOfItemsToSyncDuringInit, 10); }
+            set { this.Store(x => x.NumberOfItemsToSyncDuringInit, value); }
+        }
+
         /// <summary>
         /// The modification date of the latest created entry.
         /// </summary>
@@ -75,23 +87,6 @@ namespace Lombiq.FeedAggregator.Models
                 return this.AsField<TextField>(
                     typeof(FeedSyncProfilePart).Name,
                     FieldNames.FeedUrl).Value;
-            }
-        }
-
-        public decimal? NumberOfItemsToSyncDuringInit
-        {
-            get
-            {
-                return this.AsField<NumericField>(
-                    typeof(FeedSyncProfilePart).Name,
-                    FieldNames.NumberOfItemsToSyncDuringInit).Value;
-            }
-
-            set
-            {
-                this.AsField<NumericField>(
-                    typeof(FeedSyncProfilePart).Name,
-                    FieldNames.NumberOfItemsToSyncDuringInit).Value = value;
             }
         }
 

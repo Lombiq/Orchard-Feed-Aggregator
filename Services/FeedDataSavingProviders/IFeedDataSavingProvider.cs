@@ -1,11 +1,5 @@
 ﻿using Lombiq.FeedAggregator.Models;
 using Orchard;
-using Orchard.ContentManagement;
-using Orchard.Events;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -15,7 +9,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
     public interface IFeedDataSavingProvider : IDependency
     {
         /// <summary>
-        /// The type of the provider. 
+        /// The type of the provider.
         /// Format: PartType, PartType.PartPropertyName, FieldType.
         /// </summary>
         string ProviderType { get; }

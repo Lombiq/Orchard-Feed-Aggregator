@@ -1,13 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Xml;
+﻿using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
-using System.Xml.Linq;
 using Orchard.Logging;
+using System;
+using System.Collections.Generic;
 using System.IO;
-using Lombiq.FeedAggregator.Helpers;
+using System.Linq;
+using System.Xml;
+using System.Xml.Linq;
 
 namespace Lombiq.FeedAggregator.Services.ExtractorProviders
 {

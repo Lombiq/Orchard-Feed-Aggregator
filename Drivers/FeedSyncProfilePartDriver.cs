@@ -60,6 +60,15 @@ namespace Lombiq.FeedAggregator.Drivers
                             Prefix: Prefix);
                     }),
                 ContentShape(
+                    "Parts_FeedSyncProfile_NumberOfItemsToSyncDuringInit_Edit",
+                    () =>
+                    {
+                        return shapeHelper.EditorTemplate(
+                            TemplateName: "Parts.FeedSyncProfile.NumberOfItemsToSyncDuringInit",
+                            Model: part,
+                            Prefix: Prefix);
+                    }),
+                ContentShape(
                     "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
@@ -158,12 +167,12 @@ namespace Lombiq.FeedAggregator.Drivers
             if (updater.TryUpdateModel(part, Prefix, null, null))
             {
                 // This property cannot be changed, because the mappings will be generated according to this type.
-                if (!string.IsNullOrEmpty(oldContentTypeValue))
+                if (part.PublishingCount >= 1)
                 {
                     part.ContentType = oldContentTypeValue;
                 }
 
-                if (oldNumberOfItemsToSyncDuringInitValue != null)
+                if (part.PublishingCount >= 2)
                 {
                     part.NumberOfItemsToSyncDuringInit = oldNumberOfItemsToSyncDuringInitValue;
                 }

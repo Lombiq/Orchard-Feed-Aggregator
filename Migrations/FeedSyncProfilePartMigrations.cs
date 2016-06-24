@@ -20,13 +20,6 @@ namespace Lombiq.FeedAggregator.Migrations
                         .WithSetting("TextFieldSettings.Required", "True")
                         .WithSetting("TextFieldSettings.Hint", "The URL of the feed to sync.")
                         .WithSetting("TextFieldSettings.Flavor", "Large"))
-                    .WithField(FieldNames.NumberOfItemsToSyncDuringInit, field => field
-                        .OfType("NumericField")
-                        .WithDisplayName("Number of items to sync during init")
-                        .WithSetting("NumericFieldSettings.Required", "True")
-                        .WithSetting("NumericFieldSettings.Hint", "This many items will be created during the initialization of the feed aggregation. The init happens only once and if the number configured is 0 then no items will be created. If the feed isn't pageable only as many items will be created as many items are available on the first page.")
-                        .WithSetting("NumericFieldSettings.Minimum", "0")
-                        .WithSetting("NumericFieldSettings.DefaultValue", "10"))
                     .WithField(FieldNames.MinutesBetweenSyncs, field => field
                         .OfType("NumericField")
                         .WithDisplayName("Minutes between syncs")

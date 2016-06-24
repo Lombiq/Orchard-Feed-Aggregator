@@ -1,11 +1,6 @@
 ﻿using Lombiq.FeedAggregator.Models;
-using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Fields.Fields;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 using Piedone.HelpfulLibraries.Contents;
 using System.Globalization;
 
@@ -23,7 +18,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 
         public bool Save(IFeedDataSavingProviderContext context)
         {
-            if (!ProviderIsSuitable(context.Mapping, ProviderType, context.FeedSyncProfilePart.ContentType))
+            if (!ProviderIsSuitable(context.Mapping, context.FeedSyncProfilePart.ContentType))
                 return false;
 
             var splitMapping = context.Mapping.ContentItemStorageMapping.Split('.');

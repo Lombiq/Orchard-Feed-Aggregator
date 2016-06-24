@@ -1,11 +1,6 @@
-﻿using Lombiq.FeedAggregator.Models;
-using Lombiq.FeedAggregator.Models.NonPersistent;
-using Orchard.ContentManagement;
+﻿using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement.MetaData;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -22,10 +17,10 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
         }
 
 
-        protected bool ProviderIsSuitable(Mapping mapping, string providerType, string feedSyncProfileItemContentType)
+        protected bool ProviderIsSuitable(Mapping mapping, string feedSyncProfileItemContentType)
         {
             // It can be a simple part or a complex part.property mapping.
-            if (mapping.ContentItemStorageMapping == providerType) return true;
+            if (mapping.ContentItemStorageMapping == ProviderType) return true;
 
             // If it isn't a part mapping, then it can be a field mapping.
             var typeDefinition = _contentDefinitionManager.GetTypeDefinition(feedSyncProfileItemContentType);
@@ -42,7 +37,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             var contentPartFieldDefinition = contentTypePartDefinition
                 .PartDefinition
                 .Fields
-                .FirstOrDefault(field => field.DisplayName == splitMapping[1] && field.FieldDefinition.Name == providerType);
+                .FirstOrDefault(field => field.DisplayName == splitMapping[1] && field.FieldDefinition.Name == ProviderType);
 
             return contentPartFieldDefinition != null;
         }

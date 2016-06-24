@@ -1,5 +1,4 @@
-﻿using Lombiq.FeedAggregator.Constants;
-using Lombiq.FeedAggregator.Helpers;
+﻿using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
 using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
 using Orchard.ContentManagement.MetaData;
@@ -8,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 
@@ -132,7 +130,6 @@ namespace Lombiq.FeedAggregator.Services
                         return "Atom";
                     }
                 }
-
             }
             catch (Exception ex) when (ex is FileNotFoundException || ex is XmlException || ex is NotSupportedException)
             {
