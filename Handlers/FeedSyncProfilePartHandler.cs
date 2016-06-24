@@ -1,4 +1,4 @@
-﻿using Lombiq.FeedAggregator.Helpers;
+﻿using Lombiq.FeedAggregator.Extensions;
 using Lombiq.FeedAggregator.Models;
 using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement.Handlers;
@@ -16,8 +16,7 @@ namespace Lombiq.FeedAggregator.Handlers
         public FeedSyncProfilePartHandler(
             IJsonConverter jsonConverter,
             IScheduledTaskManager scheduledTaskManager,
-            IClock clock
-            )
+            IClock clock)
         {
             OnActivated<FeedSyncProfilePart>((context, part) =>
             {
@@ -44,7 +43,7 @@ namespace Lombiq.FeedAggregator.Handlers
                     // the second successful saving.
                     scheduledTaskManager
                         .CreateTask(
-                            TaskNameHelper.GetFeedSyncProfileUpdaterTaskName(part.ContentItem),
+                            part.ContentItem.GetFeedSyncProfileUpdaterTaskName(),
                             clock.UtcNow.AddMinutes(1),
                             part.ContentItem);
                 }

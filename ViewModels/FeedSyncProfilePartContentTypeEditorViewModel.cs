@@ -10,6 +10,6 @@ namespace Lombiq.FeedAggregator.ViewModels
     public class FeedSyncProfilePartContentTypeEditorViewModel
     {
         public FeedSyncProfilePart FeedSyncProfilePart { get; set; }
-        public IEnumerable<SelectListItem> AccessibleContentTypes { get; set; }
+        public IEnumerable<SelectListItem> CompatibleContentTypes { get; set; }
     }
 }

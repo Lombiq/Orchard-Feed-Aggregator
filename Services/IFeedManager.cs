@@ -13,18 +13,19 @@ namespace Lombiq.FeedAggregator.Services
     public interface IFeedManager : IDependency
     {
         /// <summary>
-        /// Returns true if feed type getting was successful.
-        /// If the feed is invalid then it counts as unsuccesful getting.
+        /// Get feed type from a valid feed.
+        /// If the feed is invalid then it counts as unsuccesful retrieval.
         /// It also sets the FeedItemIdType once and for all.
         /// </summary>
         /// <param name="feedSyncProfilePart">The FeedSyncProfilePart</param>
-        /// <param name="feedType">The type of the feed.</param>
-        bool TryGetValidFeedType(FeedSyncProfilePart feedSyncProfilePart, out string feedType);
+        /// <returns>The feed type, or null if the feed is invalid or unsupported.</returns>
+        string GetValidFeedType(FeedSyncProfilePart feedSyncProfilePart);
 
         /// <summary>
-        /// Returns the available content item storage names on the type.
+        /// Gets the available content item storage names on the type.
         /// </summary>
         /// <param name="contentType">The content type.</param>
-        IList<string> GetAccessibleContentItemStorageNames(string contentType);
+        /// <returns>The storage names.</returns>
+        IList<string> GetCompatibleContentItemStorageNames(string contentType);
     }
 }

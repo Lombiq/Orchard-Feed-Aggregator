@@ -15,6 +15,9 @@ using System.Xml.Linq;
 using Orchard.Logging;
 using Orchard.Core.Title.Models;
 using Orchard.Core.Common.Models;
+using Lombiq.FeedAggregator.Extensions;
+using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
+using Lombiq.FeedAggregator.Services.ExtractorProviders;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -24,7 +27,7 @@ namespace Lombiq.FeedAggregator.Services
         private readonly IClock _clock;
         private readonly IContentManager _contentManager;
         private readonly IFeedManager _feedManager;
-        private readonly IEnumerable<IFeedEntryExtractorProvider> _feedEntryExtractorProviders;
+        private readonly IEnumerable<IExtractorProvider> _feedEntryExtractorProviders;
         private readonly IEnumerable<IFeedDataSavingProvider> _feedDataSavingProviders;
 
         public ILogger Logger { get; set; }
@@ -35,7 +38,7 @@ namespace Lombiq.FeedAggregator.Services
             IClock clock,
             IContentManager contentManager,
             IFeedManager feedManager,
-            IEnumerable<IFeedEntryExtractorProvider> feedEntryExtractorProviders,
+            IEnumerable<IExtractorProvider> feedEntryExtractorProviders,
             IEnumerable<IFeedDataSavingProvider> feedDataSavingProviders)
         {
             _scheduledTaskManager = scheduledTaskManager;
@@ -51,7 +54,7 @@ namespace Lombiq.FeedAggregator.Services
 
         public void Process(ScheduledTaskContext context)
         {
-            if (!context.Task.TaskType.StartsWith(TaskTypes.FeedSyncProfileUpdaterBase)) return;
+            if (!context.Task.TaskType.StartsWith(TaskTypes.FeedSyncProfileUpdaterPrefix)) return;
 
             Renew(true, context.Task.ContentItem);
 
@@ -61,28 +64,27 @@ namespace Lombiq.FeedAggregator.Services
 
             var feedSyncProfilePart = feedSyncProfileContentItem.As<FeedSyncProfilePart>();
 
-            var feedType = "";
-            if (!_feedManager.TryGetValidFeedType(feedSyncProfilePart, out feedType)) return;
+            var feedType = _feedManager.GetValidFeedType(feedSyncProfilePart);
+            if (string.IsNullOrEmpty(feedType)) return;
 
             var newEntries = new List<XElement>();
             foreach (var feedEntryExtractorProvider in _feedEntryExtractorProviders)
             {
                 var extractedEntries = feedEntryExtractorProvider
                     .GetNewValidEntries(feedSyncProfilePart, feedType);
-                if (extractedEntries != null) newEntries.AddRange(extractedEntries);
+
+                newEntries.AddRange(extractedEntries);
             }
 
-            // The latest is at the beginning of the list, so the list must be reversed.
-            newEntries.Reverse();
             foreach (var newEntry in newEntries)
             {
                 // Persisting must be happen only if at least one successful mapping saving happened.
                 var contentItemShouldBePersisted = false;
 
-                var feedItemIdNode = XDocumentHelper.GetDescendantNodeByName(newEntry, feedSyncProfilePart.FeedItemIdType);
+                var feedItemIdNode = newEntry.GetDescendantNodeByName(feedSyncProfilePart.FeedItemIdType);
                 if (feedItemIdNode == null) continue;
                 var feedItemId = feedItemIdNode.Value;
-                var feedItemModificationDateNode = XDocumentHelper.GetDescendantNodeByName(newEntry, feedSyncProfilePart.FeedItemModificationDateType);
+                var feedItemModificationDateNode = newEntry.GetDescendantNodeByName(feedSyncProfilePart.FeedItemModificationDateType);
                 var feedItemModificationDate = new DateTime();
                 if (feedItemModificationDateNode == null ||
                     !DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
@@ -90,7 +92,7 @@ namespace Lombiq.FeedAggregator.Services
                 var feedSyncProfileItem = _contentManager
                         .Query(feedSyncProfilePart.ContentType)
                         .Where<FeedSyncProfileItemPartRecord>(record => record.FeedItemId == feedItemId)
-                        .List()
+                        .Slice(1)
                         .FirstOrDefault();
                 if (feedSyncProfileItem == null)
                 {
@@ -103,7 +105,7 @@ namespace Lombiq.FeedAggregator.Services
                     var feedEntryData = "";
                     var splitFeedMapping = mapping.FeedMapping.Split('.');
                     XElement selectedNodeInFeedEntry;
-                    if (!XDocumentHelper.TryGetNodeByPath(newEntry, splitFeedMapping[0], out selectedNodeInFeedEntry))
+                    if (!newEntry.TryGetNodeByPath(splitFeedMapping[0], out selectedNodeInFeedEntry))
                         continue;
                     // If it is an attribute mapping.
                     if (splitFeedMapping.Length > 1)
@@ -129,7 +131,7 @@ namespace Lombiq.FeedAggregator.Services
                         successfulMappingSaving = feedDataSavingProvider.Save(new FeedDataSavingProviderContext
                         {
                             FeedSyncProfilePart = feedSyncProfilePart,
-                            Data = feedEntryData,
+                            FeedContent = feedEntryData,
                             Mapping = mapping,
                             Content = feedSyncProfileItem
                         });
@@ -160,11 +162,11 @@ namespace Lombiq.FeedAggregator.Services
                     // on the FeedSyncProfilePart and set the FeedItemId if it not set yet.
                     var feedSyncProfileItemPart = feedSyncProfileItem.As<FeedSyncProfileItemPart>();
                     if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId)) feedSyncProfileItemPart.FeedItemId = feedItemId;
-                    feedSyncProfilePart.LatestCreatedItemDate = feedItemModificationDate;
+                    feedSyncProfilePart.LatestCreatedItemModificationDate = feedItemModificationDate;
                     // Setting the content item's container.
-                    var container = feedSyncProfilePart.Container.ContentItems.Count() == 0
-                        ? null
-                        : feedSyncProfilePart.Container.ContentItems.ElementAt(0);
+                    var container = feedSyncProfilePart.Container.ContentItems.Any()
+                        ? feedSyncProfilePart.Container.ContentItems.First()
+                        : null;
                     if (container != null)
                     {
                         var commonPart = feedSyncProfileItem.As<CommonPart>();
@@ -183,7 +185,7 @@ namespace Lombiq.FeedAggregator.Services
             }
 
             feedSyncProfilePart.SuccesfulInit = true;
-            feedSyncProfilePart.LatestCreatedItemDate = _clock.UtcNow;
+            feedSyncProfilePart.LatestCreatedItemModificationDate = _clock.UtcNow;
         }
 
         public void Activated()
@@ -202,7 +204,7 @@ namespace Lombiq.FeedAggregator.Services
         {
             _scheduledTaskManager
                 .CreateTaskIfNew(
-                    TaskNameHelper.GetFeedSyncProfileUpdaterTaskName(contentItem),
+                    contentItem.GetFeedSyncProfileUpdaterTaskName(),
                     _clock.UtcNow.AddMinutes(Convert.ToDouble(contentItem.As<FeedSyncProfilePart>().MinutesBetweenSyncs)),
                     contentItem,
                     calledFromTaskProcess);

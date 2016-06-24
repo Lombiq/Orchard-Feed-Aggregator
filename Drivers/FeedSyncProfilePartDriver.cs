@@ -45,7 +45,7 @@ namespace Lombiq.FeedAggregator.Drivers
                     "Parts_FeedSyncProfile_ContentType_Edit",
                     () =>
                     {
-                        var accessibleContentTypes =
+                        var compatibleContentTypes =
                             GetTypesWithFeedSyncProfileItemPart()
                             .Select(item =>
                                 new SelectListItem { Text = item, Value = item, Selected = item == part.ContentType });
@@ -55,7 +55,7 @@ namespace Lombiq.FeedAggregator.Drivers
                             Model: new FeedSyncProfilePartContentTypeEditorViewModel
                             {
                                 FeedSyncProfilePart = part,
-                                AccessibleContentTypes = accessibleContentTypes
+                                CompatibleContentTypes = compatibleContentTypes
                             },
                             Prefix: Prefix);
                     }),
@@ -63,29 +63,29 @@ namespace Lombiq.FeedAggregator.Drivers
                     "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
-                        var accessibleContentItemStorageNames = _feedManager
-                            .GetAccessibleContentItemStorageNames(part.ContentType);
+                        var compatibleContentItemStorageNames = _feedManager
+                            .GetCompatibleContentItemStorageNames(part.ContentType);
 
                         // Setting the smart defaults.
-                        if (part.Mappings.Count() == 0)
+                        if (!part.Mappings.Any())
                         {
-                            if (accessibleContentItemStorageNames.Contains("TitlePart"))
+                            if (compatibleContentItemStorageNames.Contains("TitlePart"))
                             {
                                 part.Mappings.Add(new Mapping { FeedMapping = "title", ContentItemStorageMapping = "TitlePart" });
                             }
 
-                            if (accessibleContentItemStorageNames.Contains("BodyPart"))
+                            if (compatibleContentItemStorageNames.Contains("BodyPart"))
                             {
                                 part.Mappings.Add(new Mapping { FeedMapping = "description", ContentItemStorageMapping = "BodyPart" });
                             }
                         }
 
-                        // If a mapping data storage no longer available or the feed node field is empty,
+                        // If a mapping data storage is no longer available or the feed node field is empty,
                         // then delete it from the mappings.
                         part
                             .Mappings
                             .RemoveAll(mapping =>
-                                !accessibleContentItemStorageNames.Contains(mapping.ContentItemStorageMapping) ||
+                                !compatibleContentItemStorageNames.Contains(mapping.ContentItemStorageMapping) ||
                                 string.IsNullOrEmpty(mapping.FeedMapping));
 
                         var mappingViewModel = new List<MappingViewModel>();
@@ -94,9 +94,9 @@ namespace Lombiq.FeedAggregator.Drivers
                             .Select(mapping => mapping.ContentItemStorageMapping);
 
                         // Adding as many empty fields as many can be created.
-                        foreach (var accessibleContentItemStorageName in accessibleContentItemStorageNames)
+                        foreach (var compatibleContentItemStorageName in compatibleContentItemStorageNames)
                         {
-                            if (!contentItemStorageMappings.Contains(accessibleContentItemStorageName))
+                            if (!contentItemStorageMappings.Contains(compatibleContentItemStorageName))
                             {
                                 part
                                     .Mappings
@@ -116,14 +116,14 @@ namespace Lombiq.FeedAggregator.Drivers
                             selectList.Add(
                                 new SelectListItem
                                 {
-                                    Text = "Select an Option Below",
+                                    Text = T("Select an Option Below").Text,
                                     Value = "",
                                     Selected = string.IsNullOrEmpty(mapping.ContentItemStorageMapping)
                                 });
 
                             selectList
                                 .AddRange(
-                                    accessibleContentItemStorageNames
+                                    compatibleContentItemStorageNames
                                     .Select(item =>
                                         new SelectListItem
                                         {
@@ -154,6 +154,7 @@ namespace Lombiq.FeedAggregator.Drivers
         protected override DriverResult Editor(FeedSyncProfilePart part, IUpdateModel updater, dynamic shapeHelper)
         {
             var oldContentTypeValue = part.ContentType;
+            var oldNumberOfItemsToSyncDuringInitValue = part.NumberOfItemsToSyncDuringInit;
             if (updater.TryUpdateModel(part, Prefix, null, null))
             {
                 // This property cannot be changed, because the mappings will be generated according to this type.
@@ -162,9 +163,14 @@ namespace Lombiq.FeedAggregator.Drivers
                     part.ContentType = oldContentTypeValue;
                 }
 
+                if (oldNumberOfItemsToSyncDuringInitValue != null)
+                {
+                    part.NumberOfItemsToSyncDuringInit = oldNumberOfItemsToSyncDuringInitValue;
+                }
+
                 if (!GetTypesWithFeedSyncProfileItemPart().Contains(part.ContentType))
                 {
-                    updater.AddModelError("InvalidContentTye", T("Please select a content type with FeedSyncProfileItemPart."));
+                    updater.AddModelError("InvalidContentType", T("Please select a content type with FeedSyncProfileItemPart."));
                 }
 
                 // Clearing the empty mappings so only the filled ones will be saved.
@@ -174,6 +180,7 @@ namespace Lombiq.FeedAggregator.Drivers
                         string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
+                // Removing all whitespace characters from the mappings.
                 part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
             }
 

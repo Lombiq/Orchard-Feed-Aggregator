@@ -8,17 +8,15 @@ using Orchard.ContentManagement.MetaData;
 using Piedone.HelpfulLibraries.Contents;
 using Orchard.Core.Common.Fields;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
     public class TextFieldSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
     {
-        public string ProviderType { get { return "TextField"; } }
-
-
         public TextFieldSavingProvider(
             IContentDefinitionManager contentDefinitionManager) :
             base(contentDefinitionManager)
         {
+            ProviderType = "TextField";
         }
 
 
@@ -31,7 +29,7 @@ namespace Lombiq.FeedAggregator.Services
             var textField = context.Content.AsField<TextField>(splitMapping[0], splitMapping[1]);
             if (textField == null) return false;
 
-            textField.Value = context.Data;
+            textField.Value = context.FeedContent;
 
             return true;
         }

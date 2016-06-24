@@ -1,23 +1,21 @@
 ﻿using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
-using Orchard.Core.Common.Models;
+using Orchard.Tags.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
-    public class BodyPartSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
+    public class TagsPartSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
     {
-        public string ProviderType { get { return "BodyPart"; } }
-
-
-        public BodyPartSavingProvider(
+        public TagsPartSavingProvider(
             IContentDefinitionManager contentDefinitionManager)
             : base(contentDefinitionManager)
         {
+            ProviderType = "TagsPart";
         }
 
 
@@ -25,10 +23,10 @@ namespace Lombiq.FeedAggregator.Services
         {
             if (!ProviderIsSuitable(context.Mapping, ProviderType, context.FeedSyncProfilePart.ContentType)) return false;
 
-            var bodyPart = context.Content.As<BodyPart>();
-            if (bodyPart == null) return false;
+            var tagsPart = context.Content.As<TagsPart>();
+            if (tagsPart == null) return false;
 
-            bodyPart.Text = context.Data;
+            tagsPart.CurrentTags = context.FeedContent.Split(',');
 
             return true;
         }

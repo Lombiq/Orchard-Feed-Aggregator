@@ -1,6 +1,7 @@
 ﻿using Lombiq.FeedAggregator.Constants;
 using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
+using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Logging;
 using System;
@@ -32,36 +33,34 @@ namespace Lombiq.FeedAggregator.Services
         }
 
 
-        public bool TryGetValidFeedType(FeedSyncProfilePart feedSyncProfilePart, out string feedType)
+        public string GetValidFeedType(FeedSyncProfilePart feedSyncProfilePart)
         {
-            feedType = "";
-
             try
             {
                 var feedXml = XDocument.Load(feedSyncProfilePart.FeedUrl);
 
-                // Checking if the feed is a valid RSS.
+                // Checking if the feed is valid RSS.
                 if (feedXml.Root.Name.LocalName == "rss")
                 {
-                    var channelElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, "channel");
+                    var channelElement = feedXml.Root.GetDescendantNodeByName("channel");
                     if (channelElement == null)
                     {
                         Logger.Error("Feed is invalid. No channel element.");
-                        return false;
+                        return null;
                     }
 
-                    var firstItemElement = XDocumentHelper.GetDescendantNodeByName(channelElement, "item");
+                    var firstItemElement = channelElement.GetDescendantNodeByName("item");
                     if (firstItemElement == null)
                     {
                         Logger.Error("Feed is invalid. No item element.");
-                        return false;
+                        return null;
                     }
 
-                    var pubDateElement = XDocumentHelper.GetDescendantNodeByName(firstItemElement, "pubDate");
+                    var pubDateElement = firstItemElement.GetDescendantNodeByName("pubDate");
                     if (pubDateElement == null)
                     {
                         Logger.Error("Feed is invalid. No pubDate element.");
-                        return false;
+                        return null;
                     }
 
                     if (!firstItemElement
@@ -72,49 +71,52 @@ namespace Lombiq.FeedAggregator.Services
                             element.Name.LocalName == "description"))
                     {
                         Logger.Error("Feed is invalid. No guid, title or description element.");
-                        return false;
+                        return null;
                     }
                     // Since the feed is valid, set the id type.
                     else if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType))
                     {
-                        if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "guid"))
+                        if (firstItemElement.ElementContainsNodeWithName("guid"))
                             feedSyncProfilePart.FeedItemIdType = "guid";
-                        else if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "title"))
+                        else if (firstItemElement.ElementContainsNodeWithName("title"))
                             feedSyncProfilePart.FeedItemIdType = "title";
-                        else if (XDocumentHelper.ElementContainsNodeWithName(firstItemElement, "description"))
+                        else if (firstItemElement.ElementContainsNodeWithName("description"))
                             feedSyncProfilePart.FeedItemIdType = "description";
                     }
 
-                    feedType = "Rss";
-                    if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType)) feedSyncProfilePart.FeedItemModificationDateType = "pubDate";
-                    return true;
+                    if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType))
+                    {
+                        feedSyncProfilePart.FeedItemModificationDateType = "pubDate";
+                    }
+
+                    return "Rss";
                 }
 
-                // Checking if the feed is a valid Atom.
+                // Checking if the feed is valid Atom.
                 if (feedXml.Root.Name.LocalName == "feed")
                 {
                     var xmlnsAttribute = feedXml.Root.Attribute("xmlns");
                     if (xmlnsAttribute != null && xmlnsAttribute.Value == "http://www.w3.org/2005/Atom")
                     {
-                        var firstEntryElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, "entry");
+                        var firstEntryElement = feedXml.Root.GetDescendantNodeByName("entry");
                         if (firstEntryElement == null)
                         {
                             Logger.Error("Feed is invalid. No entry element.");
-                            return false;
+                            return null;
                         }
 
-                        var updatedElement = XDocumentHelper.GetDescendantNodeByName(firstEntryElement, "updated");
+                        var updatedElement = firstEntryElement.GetDescendantNodeByName("updated");
                         if (updatedElement == null)
                         {
                             Logger.Error("Feed is invalid. No updated element.");
-                            return false;
+                            return null;
                         }
 
-                        var idElement = XDocumentHelper.GetDescendantNodeByName(firstEntryElement, "id");
+                        var idElement = firstEntryElement.GetDescendantNodeByName("id");
                         if (idElement == null)
                         {
                             Logger.Error("Feed is invalid. No id element.");
-                            return false;
+                            return null;
                         }
                         // Since the feed is valid, set the id type.
                         else if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType))
@@ -122,9 +124,12 @@ namespace Lombiq.FeedAggregator.Services
                             feedSyncProfilePart.FeedItemIdType = "id";
                         }
 
-                        feedType = "Atom";
-                        if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType)) feedSyncProfilePart.FeedItemModificationDateType = "updated";
-                        return true;
+                        if (string.IsNullOrEmpty(feedSyncProfilePart.FeedItemModificationDateType))
+                        {
+                            feedSyncProfilePart.FeedItemModificationDateType = "updated";
+                        }
+
+                        return "Atom";
                     }
                 }
 
@@ -136,15 +141,15 @@ namespace Lombiq.FeedAggregator.Services
             }
 
             Logger.Error("Cannot get the feed type, so it's unsupported.");
-            return false;
+            return null;
         }
 
-        public IList<string> GetAccessibleContentItemStorageNames(string contentType)
+        public IList<string> GetCompatibleContentItemStorageNames(string contentType)
         {
-            var accessibleDataStorageNames = new List<string>();
+            var compatibleDataStorageNames = new List<string>();
             var typeDefinition = _contentDefinitionManager.GetTypeDefinition(contentType);
 
-            if (typeDefinition == null) return accessibleDataStorageNames;
+            if (typeDefinition == null) return compatibleDataStorageNames;
 
             foreach (var provider in _providers)
             {
@@ -154,12 +159,12 @@ namespace Lombiq.FeedAggregator.Services
                     .Parts
                     .FirstOrDefault(part => part.PartDefinition.Name == partName);
 
-                // If such part exists on the type, then it's a part provider.
+                // If such a part exists on the type then it's a part provider.
                 if (partOnContentItem != null)
                 {
-                    accessibleDataStorageNames.Add(provider.ProviderType);
+                    compatibleDataStorageNames.Add(provider.ProviderType);
                 }
-                // If no such part on the type, then it's a field provider.
+                // If no such part exists on the type then it's a field provider.
                 else
                 {
                     foreach (var part in typeDefinition.Parts)
@@ -168,14 +173,14 @@ namespace Lombiq.FeedAggregator.Services
                         {
                             if (field.FieldDefinition.Name == provider.ProviderType)
                             {
-                                accessibleDataStorageNames.Add(part.PartDefinition.Name + "." + field.Name);
+                                compatibleDataStorageNames.Add(part.PartDefinition.Name + "." + field.Name);
                             }
                         }
                     }
                 }
             }
 
-            return accessibleDataStorageNames;
+            return compatibleDataStorageNames;
         }
     }
 }

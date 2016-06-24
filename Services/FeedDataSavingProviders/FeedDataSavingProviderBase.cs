@@ -7,11 +7,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
-    public class FeedDataSavingProviderBase
+    public abstract class FeedDataSavingProviderBase
     {
         private readonly IContentDefinitionManager _contentDefinitionManager;
+
+        public string ProviderType { get; set; }
 
 
         public FeedDataSavingProviderBase(IContentDefinitionManager contentDefinitionManager)
@@ -20,7 +22,7 @@ namespace Lombiq.FeedAggregator.Services
         }
 
 
-        public bool ProviderIsSuitable(Mapping mapping, string providerType, string feedSyncProfileItemContentType)
+        protected bool ProviderIsSuitable(Mapping mapping, string providerType, string feedSyncProfileItemContentType)
         {
             // It can be a simple part or a complex part.property mapping.
             if (mapping.ContentItemStorageMapping == providerType) return true;

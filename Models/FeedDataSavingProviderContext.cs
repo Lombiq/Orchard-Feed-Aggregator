@@ -11,7 +11,7 @@ namespace Lombiq.FeedAggregator.Models
     {
         public FeedSyncProfilePart FeedSyncProfilePart { get; set; }
 
-        public string Data { get; set; }
+        public string FeedContent { get; set; }
 
         public Mapping Mapping { get; set; }
 

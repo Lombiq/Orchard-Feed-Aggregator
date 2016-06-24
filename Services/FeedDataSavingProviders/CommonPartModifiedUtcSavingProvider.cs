@@ -7,17 +7,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
-    public class CommonPartCreatedUtcSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
+    public class CommonPartModifiedUtcSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
     {
-        public string ProviderType { get { return "CommonPart.CreatedUtc"; } }
-
-
-        public CommonPartCreatedUtcSavingProvider(
+        public CommonPartModifiedUtcSavingProvider(
             IContentDefinitionManager contentDefinitionManager)
             : base(contentDefinitionManager)
         {
+            ProviderType = "CommonPart.ModifiedUtc";
         }
 
 
@@ -30,10 +28,10 @@ namespace Lombiq.FeedAggregator.Services
             if (commonPart == null) return false;
 
             var dateValue = default(DateTime);
-            if (!DateTime.TryParse(context.Data, out dateValue))
+            if (!DateTime.TryParse(context.FeedContent, out dateValue))
                 return false;
 
-            commonPart.CreatedUtc = dateValue;
+            commonPart.ModifiedUtc = dateValue;
 
             return true;
         }

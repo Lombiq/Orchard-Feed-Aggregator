@@ -15,9 +15,9 @@ namespace Lombiq.FeedAggregator.Models
         FeedSyncProfilePart FeedSyncProfilePart { get; }
 
         /// <summary>
-        /// The data what will be saved.
+        /// The feed content (xml node/attribute value) what will be saved.
         /// </summary>
-        string Data { get; }
+        string FeedContent { get; }
 
         /// <summary>
         /// The corresponding mapping.
@@ -25,7 +25,7 @@ namespace Lombiq.FeedAggregator.Models
         Mapping Mapping { get; }
 
         /// <summary>
-        /// The content on the data will be saved.
+        /// The content in which the data will be saved.
         /// </summary>
         IContent Content { get; }
     }

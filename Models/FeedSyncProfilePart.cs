@@ -46,12 +46,12 @@ namespace Lombiq.FeedAggregator.Models
         }
 
         /// <summary>
-        /// The modification date of the entry in the feed.
+        /// The modification date of the latest created entry.
         /// </summary>
-        public DateTime LatestCreatedItemDate
+        public DateTime LatestCreatedItemModificationDate
         {
-            get { return this.Retrieve(x => x.LatestCreatedItemDate); }
-            set { this.Store(x => x.LatestCreatedItemDate, value); }
+            get { return this.Retrieve(x => x.LatestCreatedItemModificationDate); }
+            set { this.Store(x => x.LatestCreatedItemModificationDate, value); }
         }
 
         private readonly LazyField<List<Mapping>> _mappings = new LazyField<List<Mapping>>();
@@ -85,6 +85,13 @@ namespace Lombiq.FeedAggregator.Models
                 return this.AsField<NumericField>(
                     typeof(FeedSyncProfilePart).Name,
                     FieldNames.NumberOfItemsToSyncDuringInit).Value;
+            }
+
+            set
+            {
+                this.AsField<NumericField>(
+                    typeof(FeedSyncProfilePart).Name,
+                    FieldNames.NumberOfItemsToSyncDuringInit).Value = value;
             }
         }
 

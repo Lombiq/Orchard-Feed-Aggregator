@@ -10,20 +10,20 @@ namespace Lombiq.FeedAggregator.Migrations
         public int Create()
         {
             SchemaBuilder
-                .CreateTable(typeof(FeedSyncProfileItemPartRecord).Name,
+                .CreateTable(nameof(FeedSyncProfileItemPartRecord),
                    table => table
                        .ContentPartRecord()
                        .Column<int>("FeedSyncProfileId")
                        .Column<string>("FeedItemId")
                    )
-                .AlterTable(typeof(FeedSyncProfileItemPartRecord).Name,
+                .AlterTable(nameof(FeedSyncProfileItemPartRecord),
                    table =>
                    {
                        table.CreateIndex("FeedSyncProfileId", "FeedSyncProfileId");
                        table.CreateIndex("FeedItemId", "FeedItemId");
                    });
 
-            ContentDefinitionManager.AlterPartDefinition(typeof(FeedSyncProfileItemPart).Name,
+            ContentDefinitionManager.AlterPartDefinition(nameof(FeedSyncProfileItemPart),
                 part => part
                     .Attachable(true)
                     .WithDescription("If you attach this to a type that type will be selectable during FeedSyncProfile creation."));

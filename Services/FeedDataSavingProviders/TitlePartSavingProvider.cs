@@ -7,17 +7,15 @@ using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Title.Models;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
     public class TitlePartSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
     {
-        public string ProviderType { get { return "TitlePart"; } }
-
-
         public TitlePartSavingProvider(
             IContentDefinitionManager contentDefinitionManager)
             : base(contentDefinitionManager)
         {
+            ProviderType = "TitlePart";
         }
 
 
@@ -29,7 +27,7 @@ namespace Lombiq.FeedAggregator.Services
             var titlePart = context.Content.As<TitlePart>();
             if (titlePart == null) return false;
 
-            titlePart.Title = context.Data;
+            titlePart.Title = context.FeedContent;
 
             return true;
         }

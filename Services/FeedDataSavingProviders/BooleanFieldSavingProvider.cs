@@ -8,17 +8,15 @@ using Orchard.ContentManagement;
 using Lombiq.FeedAggregator.Models;
 using Orchard.Fields.Fields;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
     public class BooleanFieldSavingProvider : FeedDataSavingProviderBase, IFeedDataSavingProvider
     {
-        public string ProviderType { get { return "BooleanField"; } }
-
-
         public BooleanFieldSavingProvider(
             IContentDefinitionManager contentDefinitionManager) :
             base(contentDefinitionManager)
         {
+            ProviderType = "BooleanField";
         }
 
 
@@ -33,7 +31,7 @@ namespace Lombiq.FeedAggregator.Services
             if (booleanField == null) return false;
 
             var booleanValue = default(bool);
-            if (!bool.TryParse(context.Data, out booleanValue))
+            if (!bool.TryParse(context.FeedContent, out booleanValue))
                 return false;
             booleanField.Value = booleanValue;
 

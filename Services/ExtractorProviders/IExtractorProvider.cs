@@ -7,24 +7,26 @@ using System.Web;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.ExtractorProviders
 {
-    public interface IFeedEntryExtractorProvider : IDependency
+    /// <summary>
+    /// Provider for extracting feed entries from feeds.
+    /// </summary>
+    public interface IExtractorProvider : IDependency
     {
         /// <summary>
-        /// The type of the provider.
+        /// The type of the feed.
         /// </summary>
-        string ProviderType { get; }
+        string FeedType { get; }
 
         /// <summary>
-        /// The given feedType must be equal with the ProviderType. The provider should run only when they are equal.
+        /// The given feedType must be equal to the ProviderType. The provider should run only when they are equal.
         /// It will return only the valid entries.
-        /// The list of the entries will begin with the latest not yet created entry.
         /// </summary>
         /// <param name="feedSyncProfilePart">The FeedSyncProfilePart.</param>
         /// <param name="feedType">The type of the feed.</param>
         /// <returns>A list of XmlElements. 
-        /// In case of type mismatch or any error it should return null.
+        /// In case of type mismatch or any error it should return an empty list.
         /// </returns>
         IList<XElement> GetNewValidEntries(FeedSyncProfilePart feedSyncProfilePart, string feedType);
     }

@@ -11,26 +11,29 @@ namespace Lombiq.FeedAggregator.Migrations
         public int Create()
         {
             ContentDefinitionManager.AlterPartDefinition(
-                typeof(FeedSyncProfilePart).Name,
+                nameof(FeedSyncProfilePart),
                 part => part
                     .Attachable(false)
                     .WithField(FieldNames.FeedUrl, field => field
                         .OfType("TextField")
-                        .WithDisplayName("Feed Url")
+                        .WithDisplayName("Feed URL")
                         .WithSetting("TextFieldSettings.Required", "True")
-                        .WithSetting("TextFieldSettings.Hint", "The Url of the feed to sync."))
+                        .WithSetting("TextFieldSettings.Hint", "The URL of the feed to sync.")
+                        .WithSetting("TextFieldSettings.Flavor", "Large"))
                     .WithField(FieldNames.NumberOfItemsToSyncDuringInit, field => field
                         .OfType("NumericField")
-                        .WithDisplayName("Number Of Items To Sync During Init")
+                        .WithDisplayName("Number of items to sync during init")
                         .WithSetting("NumericFieldSettings.Required", "True")
-                        .WithSetting("NumericFieldSettings.Hint", "This many items will be creadted during the init. The init happens only once and if the set number is 0, then won't be created any items during init. If the feed isn't pageable, only as many items will be created as many items are available in the first page.")
-                        .WithSetting("NumericFieldSettings.Minimum", "0"))
+                        .WithSetting("NumericFieldSettings.Hint", "This many items will be created during the initialization of the feed aggregation. The init happens only once and if the number configured is 0 then no items will be created. If the feed isn't pageable only as many items will be created as many items are available on the first page.")
+                        .WithSetting("NumericFieldSettings.Minimum", "0")
+                        .WithSetting("NumericFieldSettings.DefaultValue", "10"))
                     .WithField(FieldNames.MinutesBetweenSyncs, field => field
                         .OfType("NumericField")
-                        .WithDisplayName("Minutes Between Syncs")
+                        .WithDisplayName("Minutes between syncs")
                         .WithSetting("NumericFieldSettings.Required", "True")
                         .WithSetting("NumericFieldSettings.Hint", "A background task will check the feed for new entries.")
-                        .WithSetting("NumericFieldSettings.Minimum", "1"))
+                        .WithSetting("NumericFieldSettings.Minimum", "1")
+                        .WithSetting("NumericFieldSettings.DefaultValue", "15"))
                     .WithField(FieldNames.Container, field => field
                         .OfType("ContentPickerField")
                         .WithDisplayName("Container")
@@ -41,11 +44,11 @@ namespace Lombiq.FeedAggregator.Migrations
             ContentDefinitionManager.AlterTypeDefinition(
                 ContentTypes.FeedSyncProfile,
                 cfg => cfg
-                    .WithPart(typeof(FeedSyncProfilePart).Name)
+                    .WithPart(nameof(FeedSyncProfilePart))
                     .Creatable()
                     .Listable()
                     .Securable()
-                    .DisplayedAs("Feed Sync Profile")
+                    .DisplayedAs("Feed sync profile")
                     .WithPart("TitlePart")
                     .WithPart("CommonPart",
                         part => part

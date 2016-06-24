@@ -7,10 +7,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
     /// <summary>
-    /// Provider for the saving of a value on the content item.
+    /// Provider for saving of an xml node/attribute value in the content item.
     /// </summary>
     public interface IFeedDataSavingProvider : IDependency
     {

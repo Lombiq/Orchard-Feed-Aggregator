@@ -3,17 +3,17 @@
 <fieldset>
     <ol>
         <li>
-            @Html.LabelFor(m => m.FeedSyncProfilePart.ContentType, T("Content Type"))
+            @Html.LabelFor(m => m.FeedSyncProfilePart.ContentType, T("Content type"))
             @if (string.IsNullOrEmpty(Model.FeedSyncProfilePart.ContentType))
             {
-                @Html.DropDownList("ContentType", Model.AccessibleContentTypes)
+                @Html.DropDownList("ContentType", Model.CompatibleContentTypes)
             }
             else
             {
-                @Html.DropDownList("ContentType", Model.AccessibleContentTypes, new { disabled = true })
+                @Html.DropDownList("ContentType", Model.CompatibleContentTypes, new { disabled = true })
 
             }
-            @Html.Hint(T("A content item with this type will be created. Only types with attached FeedSyncProfileItemPart can be selected. You have to select this first and you can't change it later."))
+            @Html.Hint(T("A content item with this type will be created. Only types with FeedSyncProfileItemPart attached can be selected. You have to select this first and you can't change it later."))
         </li>
     </ol>
 </fieldset>

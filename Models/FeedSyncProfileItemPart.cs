@@ -10,7 +10,7 @@ namespace Lombiq.FeedAggregator.Models
     public class FeedSyncProfileItemPart : ContentPart<FeedSyncProfileItemPartRecord>
     {
         /// <summary>
-        /// The id of the correspondig FeedSyncProfile.
+        /// The ID of the correspondig FeedSyncProfile.
         /// </summary>
         public int FeedSyncProfileId
         {
@@ -19,10 +19,9 @@ namespace Lombiq.FeedAggregator.Models
         }
 
         /// <summary>
-        /// The feed specific id in the feed entry. This is necessary for identifying the content item from
-        /// the feed's perspective.
-        /// In case of RSS feed it could be: guid, title or description.
-        /// In case of Atom feed the id is required so it will be.
+        /// The feed specific ID in the feed entry. This is necessary for identifying the content item.
+        /// In case of an RSS feed it could be: guid, title or description.
+        /// In case of an Atom feed the ID is required so it will be.
         /// </summary>
         public string FeedItemId
         {
@@ -30,6 +29,7 @@ namespace Lombiq.FeedAggregator.Models
             set { Store(x => x.FeedItemId, value); }
         }
     }
+
 
     public class FeedSyncProfileItemPartRecord : ContentPartRecord
     {

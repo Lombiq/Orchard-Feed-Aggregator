@@ -9,15 +9,15 @@ using Orchard.Logging;
 using System.IO;
 using Lombiq.FeedAggregator.Helpers;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.ExtractorProviders
 {
-    public class AtomEntryExtractorProvider : IFeedEntryExtractorProvider
+    public class AtomExtractorProvider : IExtractorProvider
     {
-        public string ProviderType { get { return "Atom"; } }
+        public string FeedType { get { return "Atom"; } }
         public ILogger Logger { get; set; }
 
 
-        public AtomEntryExtractorProvider()
+        public AtomExtractorProvider()
         {
             Logger = NullLogger.Instance;
         }
@@ -25,14 +25,14 @@ namespace Lombiq.FeedAggregator.Services
 
         public IList<XElement> GetNewValidEntries(FeedSyncProfilePart feedSyncProfilePart, string feedType)
         {
-            if (ProviderType != feedType || string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType)) return null;
-
             var newEntries = new List<XElement>();
+
+            if (FeedType != feedType || string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType)) return newEntries;
 
             try
             {
                 var feedXml = XDocument.Load(feedSyncProfilePart.FeedUrl);
-                var feedEntries = XDocumentHelper.GetDescendantNodesByName(feedXml.Root, "entry");
+                var feedEntries = feedXml.Root.GetDescendantNodesByName("entry");
                 var i = 0;
                 while (feedEntries != null && i < feedEntries.Count())
                 {
@@ -43,10 +43,10 @@ namespace Lombiq.FeedAggregator.Services
                         break;
                     }
 
-                    var updatedElement = XDocumentHelper.GetDescendantNodeByName(feedEntries.ElementAt(i), "updated");
-                    var idElement = XDocumentHelper.GetDescendantNodeByName(
-                        feedEntries.ElementAt(i),
-                        feedSyncProfilePart.FeedItemIdType);
+                    var updatedElement = feedEntries.ElementAt(i).GetDescendantNodeByName("updated");
+                    var idElement = feedEntries
+                        .ElementAt(i)
+                        .GetDescendantNodeByName(feedSyncProfilePart.FeedItemIdType);
                     var modificationDate = new DateTime();
                     if (updatedElement == null ||
                         idElement == null ||
@@ -56,7 +56,7 @@ namespace Lombiq.FeedAggregator.Services
                         continue;
                     }
 
-                    if (modificationDate.ToUniversalTime() <= feedSyncProfilePart.LatestCreatedItemDate)
+                    if (modificationDate.ToUniversalTime() <= feedSyncProfilePart.LatestCreatedItemModificationDate)
                     {
                         break;
                     }
@@ -82,7 +82,7 @@ namespace Lombiq.FeedAggregator.Services
 
                         if (nextAtomElement == null) break;
                         feedXml = XDocument.Load(nextAtomElement.Value);
-                        feedEntries = XDocumentHelper.GetDescendantNodesByName(feedXml.Root, "entry");
+                        feedEntries = feedXml.Root.GetDescendantNodesByName("entry");
                         i = 0;
                     }
                 }

@@ -9,15 +9,15 @@ using System.IO;
 using Orchard.Logging;
 using Lombiq.FeedAggregator.Helpers;
 
-namespace Lombiq.FeedAggregator.Services
+namespace Lombiq.FeedAggregator.Services.ExtractorProviders
 {
-    public class RssItemExtractorProvider : IFeedEntryExtractorProvider
+    public class RssExtractorProvider : IExtractorProvider
     {
-        public string ProviderType { get { return "Rss"; } }
+        public string FeedType { get { return "Rss"; } }
         public ILogger Logger { get; set; }
 
 
-        public RssItemExtractorProvider()
+        public RssExtractorProvider()
         {
             Logger = NullLogger.Instance;
         }
@@ -25,17 +25,17 @@ namespace Lombiq.FeedAggregator.Services
 
         public IList<XElement> GetNewValidEntries(FeedSyncProfilePart feedSyncProfilePart, string feedType)
         {
-            if (ProviderType != feedType || string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType)) return null;
-
             var newEntries = new List<XElement>();
+
+            if (FeedType != feedType || string.IsNullOrEmpty(feedSyncProfilePart.FeedItemIdType)) return newEntries;
 
             try
             {
                 var feedXml = XDocument.Load(feedSyncProfilePart.FeedUrl);
-                var channelElement = XDocumentHelper.GetDescendantNodeByName(feedXml.Root, ("channel"));
-                if (channelElement == null) return null;
+                var channelElement = feedXml.Root.GetDescendantNodeByName("channel");
+                if (channelElement == null) return newEntries;
                 var feedItems = channelElement.Descendants("item");
-                if (feedItems == null) return null;
+                if (feedItems == null) return newEntries;
 
                 foreach (var feedItem in feedItems)
                 {
@@ -46,8 +46,8 @@ namespace Lombiq.FeedAggregator.Services
                         break;
                     }
 
-                    var pubDateElement = XDocumentHelper.GetDescendantNodeByName(feedItem, "pubDate");
-                    var idElement = XDocumentHelper.GetDescendantNodeByName(feedItem, feedSyncProfilePart.FeedItemIdType);
+                    var pubDateElement = feedItem.GetDescendantNodeByName("pubDate");
+                    var idElement = feedItem.GetDescendantNodeByName(feedSyncProfilePart.FeedItemIdType);
                     var modificationDate = new DateTime();
                     if (pubDateElement == null ||
                         idElement == null ||
@@ -56,7 +56,7 @@ namespace Lombiq.FeedAggregator.Services
                         continue;
                     }
 
-                    if (modificationDate.ToUniversalTime() <= feedSyncProfilePart.LatestCreatedItemDate)
+                    if (modificationDate.ToUniversalTime() <= feedSyncProfilePart.LatestCreatedItemModificationDate)
                     {
                         break;
                     }
