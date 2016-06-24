@@ -4,10 +4,7 @@ using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement.Handlers;
 using Orchard.Services;
 using Orchard.Tasks.Scheduling;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
 
 namespace Lombiq.FeedAggregator.Handlers
 {

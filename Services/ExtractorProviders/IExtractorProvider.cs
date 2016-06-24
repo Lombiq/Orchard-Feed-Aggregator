@@ -1,10 +1,6 @@
 ﻿using Lombiq.FeedAggregator.Models;
 using Orchard;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using System.Xml;
 using System.Xml.Linq;
 
 namespace Lombiq.FeedAggregator.Services.ExtractorProviders
@@ -25,7 +21,7 @@ namespace Lombiq.FeedAggregator.Services.ExtractorProviders
         /// </summary>
         /// <param name="feedSyncProfilePart">The FeedSyncProfilePart.</param>
         /// <param name="feedType">The type of the feed.</param>
-        /// <returns>A list of XmlElements. 
+        /// <returns>A list of XmlElements.
         /// In case of type mismatch or any error it should return an empty list.
         /// </returns>
         IList<XElement> GetNewValidEntries(FeedSyncProfilePart feedSyncProfilePart, string feedType);
