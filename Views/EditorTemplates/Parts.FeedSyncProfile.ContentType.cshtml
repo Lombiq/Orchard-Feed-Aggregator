@@ -1,16 +1,21 @@
-﻿@model Lombiq.FeedAggregator.ViewModels.FeedSyncProfilePartContentTypeEditorViewModel
+﻿@using Orchard.Mvc.Extensions
+@model Lombiq.FeedAggregator.ViewModels.FeedSyncProfilePartContentTypeEditorViewModel
 
 <fieldset>
     <ol>
         <li>
             @Html.LabelFor(m => m.FeedSyncProfilePart.ContentType, T("Content type"))
-            @if (Model.FeedSyncProfilePart.PublishingCount >= 1)
+            @if (Model.FeedSyncProfilePart.PublishedCount >= 1)
             {
                 @Html.DropDownList("ContentType", Model.CompatibleContentTypes, new { disabled = true })
             }
             else
             {
                 @Html.DropDownList("ContentType", Model.CompatibleContentTypes)
+                if (!Model.CompatibleContentTypes.Any())
+                {
+                    @Html.Hint(T("You can't select any content type. Please <a href=\"{0}\">configure a content type</a> by attaching a FeedSyncProfileItemPart to it.", Url.AbsoluteAction("Index", "Admin", new { area = "Orchard.ContentTypes" })))
+                }
             }
             @Html.Hint(T("A content item with this type will be created. Only types with FeedSyncProfileItemPart attached can be selected. You have to select this first and you can't change it later. You have to save the content item at least twice: once when selecting the content type and once after the reload when you will fill all other required fields."))
         </li>

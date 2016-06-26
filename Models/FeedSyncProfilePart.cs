@@ -44,10 +44,10 @@ namespace Lombiq.FeedAggregator.Models
             set { this.Store(x => x.SuccesfulInit, value); }
         }
 
-        public int PublishingCount
+        public int PublishedCount
         {
-            get { return this.Retrieve(x => x.PublishingCount); }
-            set { this.Store(x => x.PublishingCount, value); }
+            get { return this.Retrieve(x => x.PublishedCount); }
+            set { this.Store(x => x.PublishedCount, value); }
         }
 
         [Required]

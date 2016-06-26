@@ -1,21 +1,21 @@
 ﻿<Placement>
 
   <!-- Create new FeedSyncProfile -->
-  <Match Path = "~/Admin/Contents/Create/FeedSyncProfile">
-    <Place Parts_Title_Edit = "-"
-           Fields_Common_Text_Edit = "-"
-           Fields_Numeric_Edit = "-"
-           Fields_ContentPicker_Edit = "-"
+  <Match Path="~/Admin/Contents/Create/FeedSyncProfile">
+    <Place Parts_Title_Edit="-"
+           Fields_Common_Text_Edit="-"
+           Fields_Numeric_Edit="-"
+           Fields_ContentPicker_Edit="-"
            />
   </Match>
 
   <!-- Edit FeedSyncProfile -->
-  <Match Path = "~/Admin/Contents/Edit/*">
-    <Place Parts_FeedSyncProfile_Mappings_Edit = "Content: 2"
-           Parts_FeedSyncProfile_NumberOfItemsToSyncDuringInit_Edit = "Content: 3"
+  <Match Path="~/Admin/Contents/Edit/*">
+    <Place Parts_FeedSyncProfile_Mappings_Edit="Content: 2"
+           Parts_FeedSyncProfile_NumberOfItemsToSyncDuringInit_Edit="Content: 3"
            />
   </Match>
 
-  <Place Parts_FeedSyncProfile_ContentType_Edit = "Content: 1" />
+  <Place Parts_FeedSyncProfile_ContentType_Edit="Content: 1" />
 
 </Placement>

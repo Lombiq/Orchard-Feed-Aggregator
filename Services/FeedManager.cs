@@ -1,5 +1,4 @@
-﻿using Lombiq.FeedAggregator.Helpers;
-using Lombiq.FeedAggregator.Models;
+﻿using Lombiq.FeedAggregator.Models;
 using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Logging;

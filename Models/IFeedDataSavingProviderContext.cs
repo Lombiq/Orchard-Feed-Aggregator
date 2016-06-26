@@ -11,7 +11,7 @@ namespace Lombiq.FeedAggregator.Models
         FeedSyncProfilePart FeedSyncProfilePart { get; }
 
         /// <summary>
-        /// The feed content (xml node/attribute value) what will be saved.
+        /// The feed content (xml node/attribute value) that will be saved.
         /// </summary>
         string FeedContent { get; }
 

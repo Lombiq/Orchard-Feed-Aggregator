@@ -32,7 +32,7 @@ namespace Lombiq.FeedAggregator.Handlers
 
             OnPublished<FeedSyncProfilePart>((context, part) =>
             {
-                part.PublishingCount++;
+                part.PublishedCount++;
 
                 if (context.PreviousItemVersionRecord != null)
                 {

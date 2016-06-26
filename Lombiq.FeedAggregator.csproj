@@ -112,7 +112,7 @@
     <Compile Include="Models\FeedSyncProfileItemPart.cs" />
     <Compile Include="Models\FeedSyncProfilePart.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\ExtractorProviders\AtomExtractorProvider.cs" />
+    <Compile Include="Services\FeedEntryExtractors\AtomFeedEntryExtractor.cs" />
     <Compile Include="Services\FeedDataSavingProviders\BodyPartSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviders\BooleanFieldSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviders\CommonPartModifiedUtcSavingProvider.cs" />
@@ -120,12 +120,12 @@
     <Compile Include="Services\FeedDataSavingProviders\CommonPartCreatedUtcSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviders\FeedDataSavingProviderBase.cs" />
     <Compile Include="Services\FeedManager.cs" />
-    <Compile Include="Services\ExtractorProviders\IExtractorProvider.cs" />
+    <Compile Include="Services\FeedEntryExtractors\IFeedEntryExtractor.cs" />
     <Compile Include="Services\IFeedManager.cs" />
     <Compile Include="Services\FeedDataSavingProviders\IFeedDataSavingProvider.cs" />
     <Compile Include="Services\FeedSyncProfileUpdaterScheduledTask.cs" />
     <Compile Include="Services\FeedDataSavingProviders\NumericFieldSavingProvider.cs" />
-    <Compile Include="Services\ExtractorProviders\RssExtractorProvider.cs" />
+    <Compile Include="Services\FeedEntryExtractors\RssFeedEntryExtractor.cs" />
     <Compile Include="Services\FeedDataSavingProviders\TagsPartSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviders\LinkFieldSavingProvider.cs" />
     <Compile Include="Services\FeedDataSavingProviders\TextFieldSavingProvider.cs" />

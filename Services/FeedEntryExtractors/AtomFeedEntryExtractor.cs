@@ -1,5 +1,4 @@
-﻿using Lombiq.FeedAggregator.Helpers;
-using Lombiq.FeedAggregator.Models;
+﻿using Lombiq.FeedAggregator.Models;
 using Orchard.Logging;
 using System;
 using System.Collections.Generic;
@@ -8,15 +7,15 @@ using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
 
-namespace Lombiq.FeedAggregator.Services.ExtractorProviders
+namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
 {
-    public class AtomExtractorProvider : IExtractorProvider
+    public class AtomFeedEntryExtractor : IFeedEntryExtractor
     {
         public string FeedType { get { return "Atom"; } }
         public ILogger Logger { get; set; }
 
 
-        public AtomExtractorProvider()
+        public AtomFeedEntryExtractor()
         {
             Logger = NullLogger.Instance;
         }

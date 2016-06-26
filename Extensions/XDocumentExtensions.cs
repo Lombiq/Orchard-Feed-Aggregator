@@ -1,8 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
-using System.Xml.Linq;
 
-namespace Lombiq.FeedAggregator.Helpers
+namespace System.Xml.Linq
 {
     internal static class XDocumentExtensions
     {

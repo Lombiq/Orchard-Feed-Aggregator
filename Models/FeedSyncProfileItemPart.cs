@@ -15,9 +15,10 @@ namespace Lombiq.FeedAggregator.Models
         }
 
         /// <summary>
-        /// The feed specific ID in the feed entry. This is necessary for identifying the content item.
+        /// The feed-specific ID in the feed entry. This is necessary for identifying the content item.
         /// In case of an RSS feed it could be: guid, title or description.
-        /// In case of an Atom feed the ID is required so it will be.
+        /// In case of an Atom feed the id node is required so always the Atom feed's id node will be 
+        /// used as the FeedItemId.
         /// </summary>
         public string FeedItemId
         {

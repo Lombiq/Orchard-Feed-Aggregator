@@ -171,12 +171,12 @@ namespace Lombiq.FeedAggregator.Drivers
             if (updater.TryUpdateModel(part, Prefix, null, null))
             {
                 // This property cannot be changed, because the mappings will be generated according to this type.
-                if (part.PublishingCount >= 1)
+                if (part.PublishedCount >= 1)
                 {
                     part.ContentType = oldContentTypeValue;
                 }
 
-                if (part.PublishingCount >= 2)
+                if (part.PublishedCount >= 2)
                 {
                     part.NumberOfItemsToSyncDuringInit = oldNumberOfItemsToSyncDuringInitValue;
                 }
@@ -193,10 +193,11 @@ namespace Lombiq.FeedAggregator.Drivers
                         string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
-                // Removing all whitespace characters from the mappings.
+                // Removing all whitespace characters from the mappings, because a valid mapping isn't allowed
+                // to contain any whitespace characters.
                 part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
 
-                if (part.PublishingCount == 0)
+                if (part.PublishedCount == 0)
                 {
                     _notifier.Information(T("Please don't forget saving after filling the required fields!"));
                 }

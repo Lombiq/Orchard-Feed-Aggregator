@@ -3,12 +3,12 @@ using Orchard;
 using System.Collections.Generic;
 using System.Xml.Linq;
 
-namespace Lombiq.FeedAggregator.Services.ExtractorProviders
+namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
 {
     /// <summary>
     /// Provider for extracting feed entries from feeds.
     /// </summary>
-    public interface IExtractorProvider : IDependency
+    public interface IFeedEntryExtractor : IDependency
     {
         /// <summary>
         /// The type of the feed.

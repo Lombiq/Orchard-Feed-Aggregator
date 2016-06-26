@@ -1,9 +1,8 @@
 ﻿using Lombiq.FeedAggregator.Constants;
 using Lombiq.FeedAggregator.Extensions;
-using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
-using Lombiq.FeedAggregator.Services.ExtractorProviders;
 using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
+using Lombiq.FeedAggregator.Services.FeedEntryExtractors;
 using Orchard.ContentManagement;
 using Orchard.Core.Common.Models;
 using Orchard.Core.Title.Models;
@@ -25,7 +24,7 @@ namespace Lombiq.FeedAggregator.Services
         private readonly IClock _clock;
         private readonly IContentManager _contentManager;
         private readonly IFeedManager _feedManager;
-        private readonly IEnumerable<IExtractorProvider> _feedEntryExtractorProviders;
+        private readonly IEnumerable<IFeedEntryExtractor> _feedEntryExtractors;
         private readonly IEnumerable<IFeedDataSavingProvider> _feedDataSavingProviders;
 
         public ILogger Logger { get; set; }
@@ -36,14 +35,14 @@ namespace Lombiq.FeedAggregator.Services
             IClock clock,
             IContentManager contentManager,
             IFeedManager feedManager,
-            IEnumerable<IExtractorProvider> feedEntryExtractorProviders,
+            IEnumerable<IFeedEntryExtractor> feedEntryExtractors,
             IEnumerable<IFeedDataSavingProvider> feedDataSavingProviders)
         {
             _scheduledTaskManager = scheduledTaskManager;
             _clock = clock;
             _contentManager = contentManager;
             _feedManager = feedManager;
-            _feedEntryExtractorProviders = feedEntryExtractorProviders;
+            _feedEntryExtractors = feedEntryExtractors;
             _feedDataSavingProviders = feedDataSavingProviders;
 
             Logger = NullLogger.Instance;
@@ -66,7 +65,7 @@ namespace Lombiq.FeedAggregator.Services
             if (string.IsNullOrEmpty(feedType)) return;
 
             var newEntries = new List<XElement>();
-            foreach (var feedEntryExtractorProvider in _feedEntryExtractorProviders)
+            foreach (var feedEntryExtractorProvider in _feedEntryExtractors)
             {
                 var extractedEntries = feedEntryExtractorProvider
                     .GetNewValidEntries(feedSyncProfilePart, feedType);

@@ -4,7 +4,7 @@
     <ol>
         <li>
             @Html.LabelFor(m => m.NumberOfItemsToSyncDuringInit, T("Number of items to sync during init").Text, new { @class = "required" })
-            @if (Model.PublishingCount >= 2)
+            @if (Model.PublishedCount >= 2)
             {
                 @Html.TextBoxFor(m => m.NumberOfItemsToSyncDuringInit, new { disabled = true })
             }
