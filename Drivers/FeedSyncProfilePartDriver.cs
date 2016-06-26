@@ -226,8 +226,18 @@ namespace Lombiq.FeedAggregator.Drivers
                         string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
-                // Removing all whitespace characters from the mappings, because a valid mapping isn't allowed
-                // to contain any whitespace characters.
+                foreach (var mapping in part.Mappings)
+                {
+                    mapping.FeedMapping = mapping.FeedMapping.Trim();
+                    if (mapping.FeedMapping.Any(char.IsWhiteSpace))
+                    {
+                        updater.
+                            AddModelError(
+                                "InvalidFeedMapping",
+                                T("The given feed mapping: \"{0}\" is invalid because it contains a whitespace character.", mapping.FeedMapping));
+                    }
+                }
+
                 part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
 
                 if (part.PublishedCount == 0)
