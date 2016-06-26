@@ -11,7 +11,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
         public string ProviderType { get; set; }
 
 
-        public FeedDataSavingProviderBase(IContentDefinitionManager contentDefinitionManager)
+        protected FeedDataSavingProviderBase(IContentDefinitionManager contentDefinitionManager)
         {
             _contentDefinitionManager = contentDefinitionManager;
         }
