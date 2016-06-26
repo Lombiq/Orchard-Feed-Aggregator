@@ -100,6 +100,14 @@ namespace Lombiq.FeedAggregator.Drivers
                             {
                                 part.Mappings.Add(new Mapping { FeedMapping = "description", ContentItemStorageMapping = "BodyPart" });
                             }
+
+                            if (part.FeedType == "Rss")
+                            {
+                                if (compatibleContentItemStorageNames.Contains("CommonPart.CreatedUtc"))
+                                {
+                                    part.Mappings.Add(new Mapping { FeedMapping = "pubDate", ContentItemStorageMapping = "CommonPart.CreatedUtc" });
+                                }
+                            }
                         }
 
                         // If a mapping data storage is no longer available or the feed node field is empty,
