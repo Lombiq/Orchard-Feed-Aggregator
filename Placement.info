@@ -17,5 +17,6 @@
   </Match>
 
   <Place Parts_FeedSyncProfile_ContentType_Edit="Content: 1" />
+  <Place Parts_FeedSyncProfile_FeedUrl_Edit="Content: 2" />
 
 </Placement>

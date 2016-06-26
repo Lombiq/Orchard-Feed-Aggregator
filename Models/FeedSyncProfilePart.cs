@@ -50,6 +50,19 @@ namespace Lombiq.FeedAggregator.Models
             set { this.Store(x => x.PublishedCount, value); }
         }
 
+        public string FeedType
+        {
+            get { return this.Retrieve(x => x.FeedType); }
+            set { this.Store(x => x.FeedType, value); }
+        }
+
+        [Required]
+        public string FeedUrl
+        {
+            get { return this.Retrieve(x => x.FeedUrl); }
+            set { this.Store(x => x.FeedUrl, value); }
+        }
+
         [Required]
         public int NumberOfItemsToSyncDuringInit
         {
@@ -77,16 +90,6 @@ namespace Lombiq.FeedAggregator.Models
                 return this.AsField<NumericField>(
                     typeof(FeedSyncProfilePart).Name,
                     FieldNames.MinutesBetweenSyncs).Value;
-            }
-        }
-
-        public string FeedUrl
-        {
-            get
-            {
-                return this.AsField<TextField>(
-                    typeof(FeedSyncProfilePart).Name,
-                    FieldNames.FeedUrl).Value;
             }
         }
 

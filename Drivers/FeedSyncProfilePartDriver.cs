@@ -73,6 +73,15 @@ namespace Lombiq.FeedAggregator.Drivers
                             Prefix: Prefix);
                     }),
                 ContentShape(
+                    "Parts_FeedSyncProfile_FeedUrl_Edit",
+                    () =>
+                    {
+                        return shapeHelper.EditorTemplate(
+                            TemplateName: "Parts.FeedSyncProfile.FeedUrl",
+                            Model: part,
+                            Prefix: Prefix);
+                    }),
+                ContentShape(
                     "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
@@ -168,12 +177,15 @@ namespace Lombiq.FeedAggregator.Drivers
         {
             var oldContentTypeValue = part.ContentType;
             var oldNumberOfItemsToSyncDuringInitValue = part.NumberOfItemsToSyncDuringInit;
+            var oldFeedUrl = part.FeedUrl;
             if (updater.TryUpdateModel(part, Prefix, null, null))
             {
-                // This property cannot be changed, because the mappings will be generated according to this type.
+                // These properties cannot be changed, because the mappings will be generated according
+                // to this type and URL.
                 if (part.PublishedCount >= 1)
                 {
                     part.ContentType = oldContentTypeValue;
+                    part.FeedUrl = oldFeedUrl;
                 }
 
                 if (part.PublishedCount >= 2)
@@ -184,6 +196,19 @@ namespace Lombiq.FeedAggregator.Drivers
                 if (!GetTypesWithFeedSyncProfileItemPart().Contains(part.ContentType))
                 {
                     updater.AddModelError("InvalidContentType", T("Please select a content type with FeedSyncProfileItemPart."));
+                }
+
+                if (part.PublishedCount == 0)
+                {
+                    var feedType = _feedManager.GetValidFeedType(part);
+                    if (string.IsNullOrEmpty(feedType))
+                    {
+                        updater.AddModelError("InvalidFeedUrl", T("The given feed URL is invalid or unsupported."));
+                    }
+                    else
+                    {
+                        part.FeedType = feedType;
+                    }
                 }
 
                 // Clearing the empty mappings so only the filled ones will be saved.

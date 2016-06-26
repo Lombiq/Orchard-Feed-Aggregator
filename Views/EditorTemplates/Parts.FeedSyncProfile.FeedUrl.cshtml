@@ -1,0 +1,18 @@
+﻿@model Lombiq.FeedAggregator.Models.FeedSyncProfilePart
+
+<fieldset>
+    <ol>
+        <li>
+            @Html.LabelFor(m => m.FeedUrl, T("Feed URL").Text, new { @class = "required" })
+            @if (Model.PublishedCount >= 1)
+            {
+                @Html.TextBoxFor(m => m.FeedUrl, new { disabled = true, @class = "text large" })
+            }
+            else
+            {
+                @Html.TextBoxFor(m => m.FeedUrl, new { @class = "text large" })
+            }
+            @Html.Hint(T("The URL of the feed to sync."))
+        </li>
+    </ol>
+</fieldset>

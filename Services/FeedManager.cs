@@ -133,7 +133,7 @@ namespace Lombiq.FeedAggregator.Services
             catch (Exception ex) when (ex is FileNotFoundException || ex is XmlException || ex is NotSupportedException)
             {
                 Logger.Error(ex, "Cannot find or parse the feed with the given url.");
-                throw;
+                return null;
             }
 
             Logger.Error("Cannot get the feed type, so it's unsupported.");

@@ -61,14 +61,11 @@ namespace Lombiq.FeedAggregator.Services
 
             var feedSyncProfilePart = feedSyncProfileContentItem.As<FeedSyncProfilePart>();
 
-            var feedType = _feedManager.GetValidFeedType(feedSyncProfilePart);
-            if (string.IsNullOrEmpty(feedType)) return;
-
             var newEntries = new List<XElement>();
             foreach (var feedEntryExtractorProvider in _feedEntryExtractors)
             {
                 var extractedEntries = feedEntryExtractorProvider
-                    .GetNewValidEntries(feedSyncProfilePart, feedType);
+                    .GetNewValidEntries(feedSyncProfilePart, feedSyncProfilePart.FeedType);
 
                 newEntries.AddRange(extractedEntries);
             }

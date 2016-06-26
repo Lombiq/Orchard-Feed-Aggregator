@@ -14,12 +14,6 @@ namespace Lombiq.FeedAggregator.Migrations
                 nameof(FeedSyncProfilePart),
                 part => part
                     .Attachable(false)
-                    .WithField(FieldNames.FeedUrl, field => field
-                        .OfType("TextField")
-                        .WithDisplayName("Feed URL")
-                        .WithSetting("TextFieldSettings.Required", "True")
-                        .WithSetting("TextFieldSettings.Hint", "The URL of the feed to sync.")
-                        .WithSetting("TextFieldSettings.Flavor", "Large"))
                     .WithField(FieldNames.MinutesBetweenSyncs, field => field
                         .OfType("NumericField")
                         .WithDisplayName("Minutes between syncs")
