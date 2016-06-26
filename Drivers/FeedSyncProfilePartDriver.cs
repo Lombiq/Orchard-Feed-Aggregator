@@ -8,6 +8,7 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Settings;
 using Orchard.Localization;
 using Orchard.Services;
+using Orchard.UI.Notify;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -20,6 +21,7 @@ namespace Lombiq.FeedAggregator.Drivers
         private readonly IContentDefinitionManager _contentDefinitionManager;
         private readonly IFeedManager _feedManager;
         private readonly IJsonConverter _jsonConverter;
+        private readonly INotifier _notifier;
 
 
         public Localizer T { get; set; }
@@ -28,11 +30,13 @@ namespace Lombiq.FeedAggregator.Drivers
         public FeedSyncProfilePartDriver(
             IContentDefinitionManager contentDefinitionManager,
             IFeedManager feedManager,
-            IJsonConverter jsonConverter)
+            IJsonConverter jsonConverter,
+            INotifier notifier)
         {
             _contentDefinitionManager = contentDefinitionManager;
             _feedManager = feedManager;
             _jsonConverter = jsonConverter;
+            _notifier = notifier;
 
             T = NullLocalizer.Instance;
         }
@@ -191,6 +195,11 @@ namespace Lombiq.FeedAggregator.Drivers
 
                 // Removing all whitespace characters from the mappings.
                 part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
+
+                if (part.PublishingCount == 0)
+                {
+                    _notifier.Information(T("Please don't forget saving after filling the required fields!"));
+                }
             }
 
             return Editor(part, shapeHelper);

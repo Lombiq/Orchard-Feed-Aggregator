@@ -12,7 +12,7 @@
             {
                 @Html.DropDownList("ContentType", Model.CompatibleContentTypes)
             }
-            @Html.Hint(T("A content item with this type will be created. Only types with FeedSyncProfileItemPart attached can be selected. You have to select this first and you can't change it later."))
+            @Html.Hint(T("A content item with this type will be created. Only types with FeedSyncProfileItemPart attached can be selected. You have to select this first and you can't change it later. You have to save the content item at least twice: once when selecting the content type and once after the reload when you will fill all other required fields."))
         </li>
     </ol>
 </fieldset>
