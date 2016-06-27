@@ -3,6 +3,7 @@ using Orchard.ContentManagement.MetaData;
 using Orchard.Fields.Fields;
 using Piedone.HelpfulLibraries.Contents;
 using System.Globalization;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -27,7 +28,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             if (numericField == null) return false;
 
             var decimalValue = default(decimal);
-            if (!decimal.TryParse(context.FeedContent, NumberStyles.Number, CultureInfo.InvariantCulture, out decimalValue))
+            if (!decimal.TryParse(context.FeedContent.First(), NumberStyles.Number, CultureInfo.InvariantCulture, out decimalValue))
                 return false;
             numericField.Value = decimalValue;
 

@@ -1,5 +1,6 @@
 ﻿using Lombiq.FeedAggregator.Models.NonPersistent;
 using Orchard.ContentManagement;
+using System.Collections.Generic;
 
 namespace Lombiq.FeedAggregator.Models
 {
@@ -13,7 +14,7 @@ namespace Lombiq.FeedAggregator.Models
         /// <summary>
         /// The feed content (xml node/attribute value) that will be saved.
         /// </summary>
-        string FeedContent { get; }
+        List<string> FeedContent { get; }
 
         /// <summary>
         /// The corresponding mapping.

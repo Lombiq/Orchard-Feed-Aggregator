@@ -2,6 +2,7 @@
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Fields;
 using Piedone.HelpfulLibraries.Contents;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -24,7 +25,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             var textField = context.Content.AsField<TextField>(splitMapping[0], splitMapping[1]);
             if (textField == null) return false;
 
-            textField.Value = context.FeedContent;
+            textField.Value = context.FeedContent.First();
 
             return true;
         }

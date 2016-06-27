@@ -96,27 +96,29 @@ namespace Lombiq.FeedAggregator.Services
 
                 foreach (var mapping in feedSyncProfilePart.Mappings)
                 {
-                    var feedEntryData = "";
+                    var feedEntryData = new List<string>();
                     var splitFeedMapping = mapping.FeedMapping.Split('.');
-                    XElement selectedNodeInFeedEntry;
-                    if (!newEntry.TryGetNodeByPath(splitFeedMapping[0], out selectedNodeInFeedEntry))
+                    List<XElement> selectedNodesInFeedEntry;
+                    if (!newEntry.TryGetNodesByPath(splitFeedMapping[0], out selectedNodesInFeedEntry))
                         continue;
                     // If it is an attribute mapping.
                     if (splitFeedMapping.Length > 1)
                     {
-                        var feedEntryAttribute = selectedNodeInFeedEntry.Attribute(splitFeedMapping[1]);
+                        var feedEntryAttribute = selectedNodesInFeedEntry.First().Attribute(splitFeedMapping[1]);
                         if (feedEntryAttribute == null) continue;
 
-                        feedEntryData = feedEntryAttribute.Value;
+                        feedEntryData.Add(feedEntryAttribute.Value);
                     }
                     // If it is node mapping,
                     else
                     {
                         // This is necessary, because sometimes the node contains another node as the actual content.
                         // E.g. img element.
-                        feedEntryData = string.IsNullOrEmpty(selectedNodeInFeedEntry.Value)
-                            ? string.Join("", selectedNodeInFeedEntry.Nodes().Select(x => x.ToString()).ToArray())
-                            : selectedNodeInFeedEntry.Value;
+                        feedEntryData.AddRange(
+                            selectedNodesInFeedEntry
+                            .Select(node => string.IsNullOrEmpty(node.Value)
+                                ? string.Join("", node.Nodes().Select(x => x.ToString()).ToArray())
+                                : node.Value));
                     }
 
                     var successfulMappingSaving = false;

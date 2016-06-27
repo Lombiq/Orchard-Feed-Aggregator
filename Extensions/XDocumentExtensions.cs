@@ -33,21 +33,32 @@ namespace System.Xml.Linq
         }
 
         /// <summary>
-        /// Tries to retrieve the node in the following format: DescendantNode1/DescendantNode2/...
+        /// Tries to retrieve the nodes in the following format: DescendantNode1/DescendantNode2/...
+        /// With the last fragment multiple nodes can be selected.
         /// </summary>
         /// <param name="parentNode">The parent node.</param>
         /// <param name="path">The path to the descendant node, relative to the parent node.</param>
-        /// <param name="selectedNode">The result node.</param>
-        public static bool TryGetNodeByPath(this XElement parentNode, string path, out XElement selectedNode)
+        /// <param name="selectedNodes">The result nodes.</param>
+        public static bool TryGetNodesByPath(this XElement parentNode, string path, out List<XElement> selectedNodes)
         {
-            selectedNode = parentNode;
-            foreach (var pathFragment in path.Split('/'))
+            selectedNodes = new List<XElement>();
+            var splitPath = path.Split('/');
+            var selectedNode = parentNode;
+            for (int i = 0; i < splitPath.Length; i++)
             {
-                selectedNode = GetDescendantNodeByName(selectedNode, pathFragment);
+                if (i < splitPath.Length - 2)
+                {
+                    selectedNode = GetDescendantNodeByName(selectedNode, splitPath[i]);
+                }
+                else
+                {
+                    selectedNodes.AddRange(GetDescendantNodesByName(selectedNode, splitPath[i]));
+                }
+
                 if (selectedNode == null) return false;
             }
 
-            return true;
+            return selectedNodes.Any();
         }
     }
 }

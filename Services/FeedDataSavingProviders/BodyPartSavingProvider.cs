@@ -2,6 +2,7 @@
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Models;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -22,7 +23,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             var bodyPart = context.Content.As<BodyPart>();
             if (bodyPart == null) return false;
 
-            bodyPart.Text = context.FeedContent;
+            bodyPart.Text = context.FeedContent.First();
 
             return true;
         }

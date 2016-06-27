@@ -22,7 +22,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             var tagsPart = context.Content.As<TagsPart>();
             if (tagsPart == null) return false;
 
-            tagsPart.CurrentTags = context.FeedContent.Split(',');
+            tagsPart.CurrentTags = context.FeedContent;
 
             return true;
         }

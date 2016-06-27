@@ -2,6 +2,7 @@
 using Orchard.ContentManagement.MetaData;
 using Orchard.Fields.Fields;
 using Piedone.HelpfulLibraries.Contents;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -26,7 +27,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             if (booleanField == null) return false;
 
             var booleanValue = default(bool);
-            if (!bool.TryParse(context.FeedContent, out booleanValue))
+            if (!bool.TryParse(context.FeedContent.First(), out booleanValue))
                 return false;
             booleanField.Value = booleanValue;
 

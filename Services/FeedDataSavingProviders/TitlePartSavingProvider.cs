@@ -2,6 +2,7 @@
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Title.Models;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -23,7 +24,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             var titlePart = context.Content.As<TitlePart>();
             if (titlePart == null) return false;
 
-            titlePart.Title = context.FeedContent;
+            titlePart.Title = context.FeedContent.First();
 
             return true;
         }

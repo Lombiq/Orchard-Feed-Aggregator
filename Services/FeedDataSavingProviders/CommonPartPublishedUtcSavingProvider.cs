@@ -3,6 +3,7 @@ using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Models;
 using System;
+using System.Linq;
 
 namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
 {
@@ -25,7 +26,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             if (commonPart == null) return false;
 
             var dateValue = default(DateTime);
-            if (!DateTime.TryParse(context.FeedContent, out dateValue))
+            if (!DateTime.TryParse(context.FeedContent.First(), out dateValue))
                 return false;
 
             commonPart.PublishedUtc = dateValue;
