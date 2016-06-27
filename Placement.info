@@ -13,6 +13,7 @@
   <Match Path="~/Admin/Contents/Edit/*">
     <Place Parts_FeedSyncProfile_Mappings_Edit="Content: 2"
            Parts_FeedSyncProfile_NumberOfItemsToSyncDuringInit_Edit="Content: 3"
+           Parts_FeedSyncProfile_Repopulate_Edit="Content: 10"
            />
   </Match>
 

@@ -98,6 +98,7 @@
     <Compile Include="Constants\ContentTypes.cs" />
     <Compile Include="Constants\FieldNames.cs" />
     <Compile Include="Constants\TaskTypes.cs" />
+    <Compile Include="Controllers\RepopulateAdminController.cs" />
     <Compile Include="Drivers\FeedSyncProfileItemPartDriver.cs" />
     <Compile Include="Drivers\FeedSyncProfilePartDriver.cs" />
     <Compile Include="Handlers\FeedSyncProfileItemPartHandler.cs" />
@@ -189,6 +190,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\EditorTemplates\Parts.FeedSyncProfile.FeedUrl.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\EditorTemplates\Parts.FeedSyncProfile.Repopulate.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

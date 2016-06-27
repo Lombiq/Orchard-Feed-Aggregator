@@ -4,15 +4,8 @@
     <ol>
         <li>
             @Html.LabelFor(m => m.NumberOfItemsToSyncDuringInit, T("Number of items to sync during init").Text, new { @class = "required" })
-            @if (Model.PublishedCount >= 2)
-            {
-                @Html.TextBoxFor(m => m.NumberOfItemsToSyncDuringInit, new { disabled = true })
-            }
-            else
-            {
-                @Html.TextBoxFor(m => m.NumberOfItemsToSyncDuringInit)
-            }
-            @Html.Hint(T("This many items will be created during the initialization of the feed aggregation. The init happens only once and if the number configured is 0 then no items will be created. If the feed isn't pageable only as many items will be created as many items are available on the first page."))
+            @Html.TextBoxFor(m => m.NumberOfItemsToSyncDuringInit)
+            @Html.Hint(T("This many items will be created during the initialization of the feed aggregation. The init happens only once and if the number configured is 0 then no items will be created. If the feed isn't pageable only as many items will be created as many items are available on the first page. Also this many items will be updated during a repopulate."))
         </li>
     </ol>
 </fieldset>

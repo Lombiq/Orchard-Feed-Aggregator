@@ -82,6 +82,15 @@ namespace Lombiq.FeedAggregator.Drivers
                             Prefix: Prefix);
                     }),
                 ContentShape(
+                    "Parts_FeedSyncProfile_Repopulate_Edit",
+                    () =>
+                    {
+                        return shapeHelper.EditorTemplate(
+                            TemplateName: "Parts.FeedSyncProfile.Repopulate",
+                            Model: part,
+                            Prefix: Prefix);
+                    }),
+                ContentShape(
                     "Parts_FeedSyncProfile_Mappings_Edit",
                     () =>
                     {
@@ -184,7 +193,6 @@ namespace Lombiq.FeedAggregator.Drivers
         protected override DriverResult Editor(FeedSyncProfilePart part, IUpdateModel updater, dynamic shapeHelper)
         {
             var oldContentTypeValue = part.ContentType;
-            var oldNumberOfItemsToSyncDuringInitValue = part.NumberOfItemsToSyncDuringInit;
             var oldFeedUrl = part.FeedUrl;
             if (updater.TryUpdateModel(part, Prefix, null, null))
             {
@@ -194,11 +202,6 @@ namespace Lombiq.FeedAggregator.Drivers
                 {
                     part.ContentType = oldContentTypeValue;
                     part.FeedUrl = oldFeedUrl;
-                }
-
-                if (part.PublishedCount >= 2)
-                {
-                    part.NumberOfItemsToSyncDuringInit = oldNumberOfItemsToSyncDuringInitValue;
                 }
 
                 if (!GetTypesWithFeedSyncProfileItemPart().Contains(part.ContentType))

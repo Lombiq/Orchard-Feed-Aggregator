@@ -1,0 +1,17 @@
+﻿@model Lombiq.FeedAggregator.Models.FeedSyncProfilePart
+
+@if (Model.SuccesfulInit)
+{
+    <fieldset>
+        <ol>
+            <li>
+                @Html.ActionLink(
+                    T("Repopulate"),
+                    "RepopulateFeedSyncProfileItems",
+                    "RepopulateAdmin",
+                    new { Area = "Lombiq.FeedAggregator", Id = Model.ContentItem.Id, ReturnUrl = Context.Request.RawUrl },
+                    new { @class = "button" })
+            </li>
+        </ol>
+    </fieldset>
+}
