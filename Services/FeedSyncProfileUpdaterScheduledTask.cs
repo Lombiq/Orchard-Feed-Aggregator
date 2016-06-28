@@ -117,7 +117,7 @@ namespace Lombiq.FeedAggregator.Services
                         feedEntryData.AddRange(
                             selectedNodesInFeedEntry
                             .Select(node => string.IsNullOrEmpty(node.Value)
-                                ? string.Join("", node.Nodes().Select(x => x.ToString()).ToArray())
+                                ? string.Join("", node.Nodes().Select(x => x.ToString()))
                                 : node.Value));
                     }
 

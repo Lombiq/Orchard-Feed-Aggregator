@@ -28,13 +28,15 @@ namespace Lombiq.FeedAggregator.Controllers
 
             T = NullLocalizer.Instance;
         }
+
+
         public ActionResult RepopulateFeedSyncProfileItems(int id, string returnUrl)
         {
             var feedSyncProfile = _contentManager.Get(id);
 
             if (feedSyncProfile == null || feedSyncProfile.ContentType != ContentTypes.FeedSyncProfile)
             {
-                _notifier.Error(T("Scheduling of the repopulation failed."));
+                _notifier.Error(T("Scheduling the repopulation failed."));
             }
             else
             {

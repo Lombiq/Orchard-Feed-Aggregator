@@ -229,11 +229,13 @@ namespace Lombiq.FeedAggregator.Drivers
                         string.IsNullOrEmpty(mapping.FeedMapping) ||
                         string.IsNullOrEmpty(mapping.ContentItemStorageMapping));
 
+                var invalidFeedMapping = false;
                 foreach (var mapping in part.Mappings)
                 {
                     mapping.FeedMapping = mapping.FeedMapping.Trim();
                     if (mapping.FeedMapping.Any(char.IsWhiteSpace))
                     {
+                        invalidFeedMapping = true;
                         updater.
                             AddModelError(
                                 "InvalidFeedMapping",
@@ -241,11 +243,14 @@ namespace Lombiq.FeedAggregator.Drivers
                     }
                 }
 
-                part.MappingsSerialized = Regex.Replace(_jsonConverter.Serialize(part.Mappings), @"\s+", "");
+                if (!invalidFeedMapping)
+                {
+                    part.MappingsSerialized = _jsonConverter.Serialize(part.Mappings);
+                }
 
                 if (part.PublishedCount == 0)
                 {
-                    _notifier.Information(T("Please don't forget saving after filling the required fields!"));
+                    _notifier.Information(T("Please don't forget to save again after filling out the required fields!"));
                 }
             }
 
