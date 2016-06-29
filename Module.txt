@@ -1,13 +1,13 @@
-﻿Name: Rss Reader
+﻿Name: Feed Aggregator
 AntiForgery: enabled
 Author: Lombiq
 Website: https://github.com/Lombiq/Orchard-RSS-Reader
 Version: 1.0
 OrchardVersion: 1.10.1
-Description: Aggregates RSS feeds by making content items from them.
+Description: Aggregates feeds by creating content items from them. The supported feed types are: RSS and Atom feeds.
 Features:
-    Lombiq.RssReader:
-        Name: Rss Reader
-        Description: Aggregates RSS feeds by making content items from them.
+    Lombiq.FeedAggregator:
+        Name: Feed Aggregator
+        Description: Aggregates feeds by creating content items from them. The supported feed types are: RSS and Atom feeds.
         Category: Content
-        Dependencies: 
+        Dependencies: Orchard.ContentPicker, Orchard.Fields, Orchard.Tags, Piedone.HelpfulLibraries.Contents, Piedone.HelpfulLibraries.Tasks

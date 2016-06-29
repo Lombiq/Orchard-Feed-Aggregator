@@ -1,0 +1,18 @@
+﻿@model Lombiq.FeedAggregator.Models.FeedSyncProfilePart
+
+@if (Model.SuccesfulInit)
+{
+    <fieldset>
+        <ol>
+            <li>
+                @Html.ActionLink(
+                    T("Repopulate"),
+                    "RepopulateFeedSyncProfileItems",
+                    "RepopulateAdmin",
+                    new { Area = "Lombiq.FeedAggregator", Id = Model.ContentItem.Id, ReturnUrl = Context.Request.RawUrl },
+                    new { itemprop = "UnsafeUrl", @class = "button" })
+                @Html.Hint(T("Update the corresponding FeedProfileSync items. This is useful when you add a new mapping and want the new mapping on the existing items."))
+            </li>
+        </ol>
+    </fieldset>
+}
