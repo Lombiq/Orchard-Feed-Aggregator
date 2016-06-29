@@ -7,7 +7,7 @@ OrchardVersion: 1.10.1
 Description: Aggregates feeds by creating content items from them. The supported feed types are: RSS and Atom feeds.
 Features:
     Lombiq.FeedAggregator:
-        Name: Feed Aggregator 
+        Name: Feed Aggregator
         Description: Aggregates feeds by creating content items from them. The supported feed types are: RSS and Atom feeds.
         Category: Content
         Dependencies: Orchard.ContentPicker, Orchard.Fields, Orchard.Tags, Piedone.HelpfulLibraries.Contents, Piedone.HelpfulLibraries.Tasks
