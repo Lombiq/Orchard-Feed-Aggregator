@@ -1,6 +1,7 @@
 ﻿using Lombiq.FeedAggregator.Constants;
 using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement;
+using Orchard.Core.Contents;
 using Orchard.Localization;
 using Orchard.Mvc.Extensions;
 using Orchard.Security;
@@ -34,10 +35,10 @@ namespace Lombiq.FeedAggregator.Controllers
         [HttpPost]
         public ActionResult RepopulateFeedSyncProfileItems(int id, string returnUrl)
         {
-            if (!_authorizer.Authorize(Permissions.RepopulateFeedSyncProfilePermission))
-                return new HttpUnauthorizedResult(T("You are not allowed to repopulate feed sync profiles.").Text);
-
             var feedSyncProfile = _contentManager.Get(id);
+
+            if (!_authorizer.Authorize(Permissions.EditContent, feedSyncProfile))
+                return new HttpUnauthorizedResult(T("You are not allowed to repopulate feed sync profiles.").Text);
 
             if (feedSyncProfile == null || feedSyncProfile.ContentType != ContentTypes.FeedSyncProfile)
             {
