@@ -4,7 +4,7 @@
 
 ## Project description
 
-Orchard module for aggregating feeds by creating content items from them. Supported feed types are: RSS and Atom feeds.
+Orchard module for aggregating feeds by creating content items from them. Supported feed types are: RSS and Atom feeds. This module was created when developing the new Orchard app driving [www.dotnetfoundation.org](http://www.dotnetfoundation.org/), the website of .NET Foundation.
 
 The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
 
