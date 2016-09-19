@@ -150,15 +150,15 @@
       <Name>Orchard.Core</Name>
       <Private>false</Private>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.ContentPicker\Orchard.ContentPicker.csproj">
+    <ProjectReference Include="..\..\Modules\Orchard.ContentPicker\Orchard.ContentPicker.csproj">
       <Project>{F301EF7D-F19C-4D83-AA94-CB64F29C037D}</Project>
       <Name>Orchard.ContentPicker</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.Fields\Orchard.Fields.csproj">
+    <ProjectReference Include="..\..\Modules\Orchard.Fields\Orchard.Fields.csproj">
       <Project>{3787DDE5-E5C8-4841-BDA7-DCB325388064}</Project>
       <Name>Orchard.Fields</Name>
     </ProjectReference>
-    <ProjectReference Include="..\Orchard.Tags\Orchard.Tags.csproj">
+    <ProjectReference Include="..\..\Modules\Orchard.Tags\Orchard.Tags.csproj">
       <Project>{5D0F00F0-26C9-4785-AD61-B85710C60EB0}</Project>
       <Name>Orchard.Tags</Name>
     </ProjectReference>
