@@ -1,5 +1,6 @@
 ﻿using Lombiq.FeedAggregator.Constants;
 using Lombiq.FeedAggregator.Extensions;
+using Lombiq.FeedAggregator.Helpers;
 using Lombiq.FeedAggregator.Models;
 using Lombiq.FeedAggregator.Services.FeedDataSavingProviders;
 using Lombiq.FeedAggregator.Services.FeedEntryExtractors;
@@ -81,7 +82,7 @@ namespace Lombiq.FeedAggregator.Services
                 var feedItemModificationDateNode = newEntry.GetDescendantNodeByName(feedSyncProfilePart.FeedItemModificationDateType);
                 var feedItemModificationDate = new DateTime();
                 if (feedItemModificationDateNode == null ||
-                    !DateTime.TryParse(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
+                    !DateTimeHelper.TryGetDateTime(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
 
                 var feedSyncProfileItem = _contentManager
                         .Query(feedSyncProfilePart.ContentType)

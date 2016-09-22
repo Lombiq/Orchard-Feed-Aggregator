@@ -4,6 +4,7 @@ using Lombiq.FeedAggregator.Services;
 using Lombiq.FeedAggregator.ViewModels;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.Drivers;
+using Orchard.ContentManagement.Handlers;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Contents.Settings;
 using Orchard.Localization;
@@ -255,6 +256,16 @@ namespace Lombiq.FeedAggregator.Drivers
             }
 
             return Editor(part, shapeHelper);
+        }
+
+        protected override void Exporting(FeedSyncProfilePart part, ExportContentContext context)
+        {
+            ExportInfoset(part, context);
+        }
+
+        protected override void Importing(FeedSyncProfilePart part, ImportContentContext context)
+        {
+            ImportInfoset(part, context);
         }
 
 

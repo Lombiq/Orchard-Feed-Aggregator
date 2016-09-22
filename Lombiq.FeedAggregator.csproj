@@ -105,6 +105,7 @@
     <Compile Include="Handlers\FeedSyncProfilePartHandler.cs" />
     <Compile Include="Extensions\ContentItemExtensions.cs" />
     <Compile Include="Extensions\XDocumentExtensions.cs" />
+    <Compile Include="Helpers\DateTimeHelper.cs" />
     <Compile Include="Migrations\FeedSyncProfileItemPartMigrations.cs" />
     <Compile Include="Migrations\FeedSyncProfilePartMigrations.cs" />
     <Compile Include="Models\IFeedDataSavingProviderContext.cs" />

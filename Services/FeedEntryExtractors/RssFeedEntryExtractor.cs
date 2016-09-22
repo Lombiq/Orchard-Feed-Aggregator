@@ -1,7 +1,9 @@
-﻿using Lombiq.FeedAggregator.Models;
+﻿using Lombiq.FeedAggregator.Helpers;
+using Lombiq.FeedAggregator.Models;
 using Orchard.Logging;
 using System;
 using System.Collections.Generic;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Xml;
@@ -49,7 +51,7 @@ namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
                     var modificationDate = new DateTime();
                     if (pubDateElement == null ||
                         idElement == null ||
-                        !DateTime.TryParse(pubDateElement.Value, out modificationDate))
+                        !DateTimeHelper.TryGetDateTime(pubDateElement.Value, out modificationDate))
                     {
                         continue;
                     }
