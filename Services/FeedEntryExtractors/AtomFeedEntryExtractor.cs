@@ -49,7 +49,7 @@ namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
                     var modificationDate = new DateTime();
                     if (updatedElement == null ||
                         idElement == null ||
-                        !DateTimeHelper.TryGetDateTime(updatedElement.Value, out modificationDate))
+                        !DateTimeHelper.TryParseDateTime(updatedElement.Value, out modificationDate))
                     {
                         i++;
                         continue;

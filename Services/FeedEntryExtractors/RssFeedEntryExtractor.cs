@@ -51,7 +51,7 @@ namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
                     var modificationDate = new DateTime();
                     if (pubDateElement == null ||
                         idElement == null ||
-                        !DateTimeHelper.TryGetDateTime(pubDateElement.Value, out modificationDate))
+                        !DateTimeHelper.TryParseDateTime(pubDateElement.Value, out modificationDate))
                     {
                         continue;
                     }

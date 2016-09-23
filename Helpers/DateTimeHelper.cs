@@ -8,7 +8,7 @@ namespace Lombiq.FeedAggregator.Helpers
     /// <summary>
     /// Helper for parsing dates.
     /// </summary>
-    public class DateTimeHelper
+    public static class DateTimeHelper
     {
         /// <summary>
         /// Parses the given string to date. This is neccessary because the simple tryparse can't parse the
@@ -16,22 +16,35 @@ namespace Lombiq.FeedAggregator.Helpers
         /// </summary>
         /// <param name="dateString">The date string.</param>
         /// <param name="date">The parsed date.</param>
-        /// <returns>True if the parse was successful.</returns>
-        public static bool TryGetDateTime(string dateString, out DateTime date)
+        /// <returns>True if parsing was successful.</returns>
+        public static bool TryParseDateTime(string dateString, out DateTime date)
         {
             // Checking if the simple tryparse can parse the date.
-            date = new DateTime();
+            date = DateTime.MinValue;
             if (DateTime.TryParse(dateString, out date))
             {
                 return true;
             }
 
-            // If the given string ends with "EDT", then parse it manually.
-            if (dateString.Substring(dateString.Length - 3) == "EDT")
+            var predefinedTimeZones = new Dictionary<string, string>
             {
-                if (DateTime.TryParse(dateString.Substring(0, dateString.Length - 3) + " -0400", out date))
+                { "EDT", "-0400" },
+                { "EST", "-0500" },
+                { "HST", "-1000" },
+                { "HAST", "-1000" },
+                { "AKDT", "-0800" },
+                { "PDT", "-0700" },
+                { "CDT", "-0500" }
+            };
+            // If the given string end with a predefined key, then try parse it manually.
+            foreach (var timeZone in predefinedTimeZones)
+            {
+                if (dateString.Substring(dateString.Length - timeZone.Key.Length) == timeZone.Key)
                 {
-                    return true;
+                    if (DateTime.TryParse(dateString.Substring(0, dateString.Length - timeZone.Key.Length) + " " + timeZone.Value, out date))
+                    {
+                        return true;
+                    }
                 }
             }
 

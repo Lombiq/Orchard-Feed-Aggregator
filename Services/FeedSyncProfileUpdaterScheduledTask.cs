@@ -82,7 +82,7 @@ namespace Lombiq.FeedAggregator.Services
                 var feedItemModificationDateNode = newEntry.GetDescendantNodeByName(feedSyncProfilePart.FeedItemModificationDateType);
                 var feedItemModificationDate = new DateTime();
                 if (feedItemModificationDateNode == null ||
-                    !DateTimeHelper.TryGetDateTime(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
+                    !DateTimeHelper.TryParseDateTime(feedItemModificationDateNode.Value, out feedItemModificationDate)) continue;
 
                 var feedSyncProfileItem = _contentManager
                         .Query(feedSyncProfilePart.ContentType)
