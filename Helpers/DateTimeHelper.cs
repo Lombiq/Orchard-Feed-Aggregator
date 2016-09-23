@@ -11,8 +11,8 @@ namespace Lombiq.FeedAggregator.Helpers
     public static class DateTimeHelper
     {
         /// <summary>
-        /// Parses the given string to date. This is neccessary because the simple tryparse can't parse the
-        /// date strings which ends with some time zone abbrevations.
+        /// Parses the given string to date. This is neccessary because the simple TryParse() can't parse date
+        /// strings which end with some time zone abbrevations.
         /// </summary>
         /// <param name="dateString">The date string.</param>
         /// <param name="date">The parsed date.</param>
