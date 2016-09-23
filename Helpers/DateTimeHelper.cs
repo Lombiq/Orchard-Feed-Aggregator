@@ -12,7 +12,7 @@ namespace Lombiq.FeedAggregator.Helpers
     {
         /// <summary>
         /// Parses the given string to date. This is neccessary because the simple tryparse can't parse the
-        /// date strings which ends with "EDT".
+        /// date strings which ends with some time zone abbrevations.
         /// </summary>
         /// <param name="dateString">The date string.</param>
         /// <param name="date">The parsed date.</param>
@@ -36,7 +36,7 @@ namespace Lombiq.FeedAggregator.Helpers
                 { "PDT", "-0700" },
                 { "CDT", "-0500" }
             };
-            // If the given string end with a predefined key, then try parse it manually.
+            // If the given string ends with a predefined key, then try parse it manually.
             foreach (var timeZone in predefinedTimeZones)
             {
                 if (dateString.Substring(dateString.Length - timeZone.Key.Length) == timeZone.Key)

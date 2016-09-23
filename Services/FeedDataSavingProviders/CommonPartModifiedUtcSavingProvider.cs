@@ -1,4 +1,5 @@
-﻿using Lombiq.FeedAggregator.Models;
+﻿using Lombiq.FeedAggregator.Helpers;
+using Lombiq.FeedAggregator.Models;
 using Orchard.ContentManagement;
 using Orchard.ContentManagement.MetaData;
 using Orchard.Core.Common.Models;
@@ -26,7 +27,7 @@ namespace Lombiq.FeedAggregator.Services.FeedDataSavingProviders
             if (commonPart == null) return false;
 
             var dateValue = default(DateTime);
-            if (!DateTime.TryParse(context.FeedContent.First(), out dateValue))
+            if (!DateTimeHelper.TryParseDateTime(context.FeedContent.First(), out dateValue))
                 return false;
 
             commonPart.ModifiedUtc = dateValue;
