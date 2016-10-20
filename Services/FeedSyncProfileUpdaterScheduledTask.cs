@@ -158,7 +158,11 @@ namespace Lombiq.FeedAggregator.Services
                     // Also this is the time when we want to store the last creation date
                     // on the FeedSyncProfilePart and set the FeedItemId if it not set yet.
                     var feedSyncProfileItemPart = feedSyncProfileItem.As<FeedSyncProfileItemPart>();
-                    if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId)) feedSyncProfileItemPart.FeedItemId = feedItemId;
+                    if (string.IsNullOrEmpty(feedSyncProfileItemPart.FeedItemId))
+                    {
+                        feedSyncProfileItemPart.FeedItemId = feedItemId;
+                    }
+                    feedSyncProfileItemPart.FeedSyncProfileId = feedSyncProfilePart.ContentItem.Id;
                     feedSyncProfilePart.LatestCreatedItemModificationDate = feedItemModificationDate;
                     // Setting the content item's container.
                     var container = feedSyncProfilePart.Container.ContentItems.Any()
