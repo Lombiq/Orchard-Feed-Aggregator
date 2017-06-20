@@ -4,7 +4,7 @@
 
 ## Project description
 
-Orchard module for aggregating feeds by creating content items from them. Supported feed types are: RSS and Atom feeds. This module was created when developing the new Orchard app driving [www.dotnetfoundation.org](http://www.dotnetfoundation.org/), the website of .NET Foundation.
+Orchard module for aggregating feeds by creating content items from them. Supported feed types are: RSS and Atom feeds. This module was created when developing the new Orchard app driving [www.dotnetfoundation.org](http://www.dotnetfoundation.org/), the website of .NET Foundation. It's also available for all sites on [DotNest, the Orchard SaaS](https://dotnest.com).
 
 The module's source is available in two public source repositories, automatically mirrored in both directions with [Git-hg Mirror](https://githgmirror.com):
 
@@ -14,7 +14,8 @@ The module's source is available in two public source repositories, automaticall
 Bug reports, feature requests and comments are warmly welcome, **please do so via GitHub**.
 Feel free to send pull requests too, no matter which source repository you choose for this purpose.
 
-This project is developed by [Lombiq Technologies Ltd](http://lombiq.com/). Commercial-grade support is available through Lombiq.
+This project is developed by [Lombiq Technologies Ltd](https://lombiq.com/). Commercial-grade support is available through Lombiq.
+
 
 ## Feed requirements
 

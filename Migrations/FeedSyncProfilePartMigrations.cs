@@ -37,6 +37,7 @@ namespace Lombiq.FeedAggregator.Migrations
                     .Securable()
                     .DisplayedAs("Feed sync profile")
                     .WithPart("TitlePart")
+                    .WithPart("IdentityPart")
                     .WithPart("CommonPart",
                         part => part
                             .WithSetting("OwnerEditorSettings.ShowOwnerEditor", "False")
