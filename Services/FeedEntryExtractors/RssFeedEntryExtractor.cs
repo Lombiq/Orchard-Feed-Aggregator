@@ -8,6 +8,7 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using System.Xml.Linq;
+using System.Net;
 
 namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
 {
@@ -66,9 +67,10 @@ namespace Lombiq.FeedAggregator.Services.FeedEntryExtractors
 
                 return newEntries;
             }
-            catch (Exception ex) when (ex is FileNotFoundException || ex is XmlException || ex is NotSupportedException)
+            catch (Exception ex)
+            when (ex is FileNotFoundException || ex is XmlException || ex is NotSupportedException || ex is WebException)
             {
-                Logger.Error(ex, "Cannot find or parse the feed with the given url.");
+                Logger.Error(ex, "Cannot find or parse the feed with the url " + feedSyncProfilePart.FeedUrl + ".");
                 throw;
             }
         }
