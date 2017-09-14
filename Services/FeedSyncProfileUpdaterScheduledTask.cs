@@ -73,7 +73,7 @@ namespace Lombiq.FeedAggregator.Services
 
             foreach (var newEntry in newEntries)
             {
-                // Persisting must be happen only if at least one successful mapping saving happened.
+                // Persisting must happen only if at least one successful mapping saving happened.
                 var contentItemShouldBePersisted = false;
 
                 var feedItemIdNode = newEntry.GetDescendantNodeByName(feedSyncProfilePart.FeedItemIdType);
@@ -145,7 +145,7 @@ namespace Lombiq.FeedAggregator.Services
                     {
                         var feedSyncProfileTitlePart = feedSyncProfileContentItem.As<TitlePart>();
                         Logger.Error(string.Format(
-                            "No suitable provider for the selected mapping ({0} to {1}). This can be due to a content type definion change. Please edit and save the corresponding (Title: {2}) FeedSyncProfile.",
+                            "No suitable provider for the selected mapping ({0} to {1}). This can be due to a content type definition change. Please edit and save the corresponding (Title: {2}) FeedSyncProfile.",
                             mapping.FeedMapping,
                             mapping.ContentItemStorageMapping,
                             feedSyncProfileTitlePart == null ? "unknown" : feedSyncProfileTitlePart.Title));
