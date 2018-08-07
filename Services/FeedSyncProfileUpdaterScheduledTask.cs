@@ -17,6 +17,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Xml.Linq;
 using Orchard.Exceptions;
+using System.Net;
 
 namespace Lombiq.FeedAggregator.Services
 {
@@ -31,6 +32,14 @@ namespace Lombiq.FeedAggregator.Services
 
         public ILogger Logger { get; set; }
 
+
+        static FeedSyncProfileUpdaterScheduledTask()
+        {
+            // This needs to be set explicitly to be able to download HTTPS Azure web app feeds, so setting it here for
+            // all IFeedEntryExtractors. This is not nice but there seems to be no other way.
+            // See: https://support.microsoft.com/en-us/help/3069494/cannot-connect-to-a-server-by-using-the-servicepointmanager-or-sslstre
+            ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls | SecurityProtocolType.Tls11 | SecurityProtocolType.Tls12;
+        }
 
         public FeedSyncProfileUpdaterScheduledTask(
             IScheduledTaskManager scheduledTaskManager,
